@@ -28,3 +28,4 @@ services:
 volumes:
   postgres:
     name: nest-db
+    external: true
