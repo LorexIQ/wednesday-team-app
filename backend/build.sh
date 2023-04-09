@@ -1,6 +1,7 @@
 #!/bin/bash
 ###########
 
+git checkout backend
 git reset --hard
 git pull
 
