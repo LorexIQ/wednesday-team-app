@@ -30,7 +30,7 @@ export class UsersService {
   async checkUnique(createDto: UserCreateDto): Promise<Object> {
     const {email, phone} = createDto;
     const user = await this.userModel.findOne({
-      where: { [Op.or]: [{email, phone}] }
+      where: { [Op.or]: [{email}, {phone}] }
     });
     if (!user) return null;
     const errors = [];

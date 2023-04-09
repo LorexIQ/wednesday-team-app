@@ -1,6 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { PingDto } from "./dto/ping.dto";
+import { PingDto } from "./swagger/ping.dto";
 
 @Controller()
 export class AppController {
