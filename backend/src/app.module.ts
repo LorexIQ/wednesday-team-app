@@ -7,9 +7,15 @@ import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { TripsModule } from './trips/trips.module';
 import {Trip} from "./trips/trips.model";
+import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";
+import {APP_GUARD} from "@nestjs/core";
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      ttl: 20,
+      limit: 10,
+    }),
     ConfigModule.forRoot({
       envFilePath: `${process.env.NODE_ENV ?? ''}.env`
     }),
@@ -29,6 +35,11 @@ import {Trip} from "./trips/trips.model";
     TripsModule
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    }
+  ],
 })
 export class AppModule {}
