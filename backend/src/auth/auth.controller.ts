@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { UserLoginDto } from "../users/dto/user-login.dto";
 import { UserCreateDto } from "../users/dto/user-create.dto";
@@ -21,7 +21,7 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @ApiOperation({summary: 'Регистрация пользователь + возврат токена'})
+  @ApiOperation({summary: 'Регистрация пользователя + возврат токена'})
   @ApiBody({type: UserCreateDto})
   @ApiResponse({ type: TokenDto, status: 200})
   @ApiResponse({ type: SignupErrorDto, status: 400})
