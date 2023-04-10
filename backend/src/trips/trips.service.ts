@@ -71,6 +71,7 @@ export class TripsService {
         else if (!user.tripId)
             throw new HttpException('Вы не являеетесь пассажиром', HttpStatus.BAD_REQUEST);
         const trip = await this.getTripById(user.tripId);
+        await trip.update({placesIsFilled: trip.placesIsFilled - (1 + user.addPassengers)});
         await trip.$remove('passengers', user.id);
         await user.update({addPassengers: null});
         return;
