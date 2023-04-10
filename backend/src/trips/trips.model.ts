@@ -32,9 +32,13 @@ export class Trip extends Model<Trip, TripCreationAttrs> {
     @Column({type: DataType.INTEGER, allowNull: false})
     places: number;
 
-    // @ApiProperty({default: false})
-    // @Column({type: DataType.BOOLEAN, defaultValue: false})
-    // complected: boolean;
+    @ApiProperty({default: 1, minimum: 0, maximum: 4})
+    @Column({type: DataType.INTEGER, defaultValue: 0})
+    placesIsFilled: number;
+
+    @ApiProperty({default: false})
+    @Column({type: DataType.BOOLEAN, defaultValue: false})
+    complected: boolean;
 
     @ApiProperty({type: () => User})
     @ForeignKey(() => User)

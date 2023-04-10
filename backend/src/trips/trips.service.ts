@@ -20,10 +20,10 @@ export class TripsService {
     async getTrips(): Promise<Trip[]> {
         return await this.tripsModel.findAll({include: {all: true}});
     }
-    async getMeTrip(user: User) {
-        if (!user.selfTripId || !user.tripId) {
-
-        }
+    async getMeTrip(user: User): Promise<Trip> {
+        if (!user.selfTripId && !user.tripId)
+            throw new HttpException('Пользователь не имеет активной поездки', HttpStatus.BAD_REQUEST);
+        return await this.getTripById(user.selfTripId ?? user.tripId);
     }
     async getTripById(id: number): Promise<Trip> {
         return await this.tripsModel.findOne({
@@ -62,6 +62,7 @@ export class TripsService {
         await user.update({addPassengers: addPassengersDto.addPassengers});
         await trip.$add('passengers', user.id);
         await trip.reload();
+        await trip.update({placesIsFilled: this.getFilledTripPlaces(trip), complected: this.isTripComplete(trip)})
         return trip;
     }
     async leaveTrip(user: User): Promise<void> {
@@ -75,17 +76,17 @@ export class TripsService {
         return;
     }
 
+    private getFilledTripPlaces(trip: Trip) {
+        return trip.passengers.reduce((accum: number, user: User): number => accum + user.addPassengers + 1, 0);
+    };
     private isUserInTripPassengers(user: User, trip: Trip): Boolean {
         return trip.passengers.some(us => us.id === user.id);
     }
     private isTripComplete(trip: Trip, addPassengers?: number) {
-        const getInnerCount = () => {
-            return trip.passengers.reduce((accum: number, user: User): number => accum + user.addPassengers + 1, 0);
-        };
         if (addPassengers) {
-            return getInnerCount() + addPassengers + 1 > trip.places;
+            return this.getFilledTripPlaces(trip) + addPassengers + 1 > trip.places;
         } else {
-            return getInnerCount() >= trip.places;
+            return this.getFilledTripPlaces(trip) >= trip.places;
         }
     }
 }

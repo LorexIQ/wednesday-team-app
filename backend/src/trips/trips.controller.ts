@@ -16,6 +16,7 @@ import {
 } from "../swagger/join-trip-error.dto";
 import {LeaveTripError1Dto, LeaveTripError2Dto} from "../swagger/leave-trip-error.dto";
 import {AddPassengersDto} from "./dto/add-passengers.dto";
+import {MeTripErrorDto} from "../swagger/me-trip-error.dto";
 
 @UseGuards(JwtGuard)
 @ApiTags('Поездки')
@@ -39,8 +40,11 @@ export class TripsController {
         return this.tripsService.getTrips();
     }
 
+    @ApiOperation({summary: 'Возвращает активную поездку'})
+    @ApiResponse({ type: Trip, status: 200})
+    @ApiResponse({ type: MeTripErrorDto, status: 400})
     @Get('me')
-    getMeTrip(@Req() req: Request) {
+    getMeTrip(@Req() req: Request): Promise<Trip> {
         return this.tripsService.getMeTrip(req.user as User);
     }
 
