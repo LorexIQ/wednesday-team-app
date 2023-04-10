@@ -15,6 +15,7 @@ import {
     JoinTripError4Dto
 } from "../swagger/join-trip-error.dto";
 import {LeaveTripError1Dto, LeaveTripError2Dto} from "../swagger/leave-trip-error.dto";
+import {AddPassengersDto} from "./dto/add-passengers.dto";
 
 @UseGuards(JwtGuard)
 @ApiTags('Поездки')
@@ -27,15 +28,20 @@ export class TripsController {
     @ApiResponse({ type: Trip, status: 200})
     @ApiResponse({ type: CreateTripErrorDto, status: 400})
     @Post()
-    createTrip(@Body() tripDto: TripDto, @Req() req: Request) {
+    createTrip(@Body() tripDto: TripDto, @Req() req: Request): Promise<Trip> {
         return this.tripsService.createTrip(tripDto, req.user as User);
     }
 
     @ApiOperation({summary: 'Получить все поездки'})
     @ApiResponse({ type: [Trip], status: 200})
     @Get()
-    getTrips() {
+    getTrips(): Promise<Trip[]> {
         return this.tripsService.getTrips();
+    }
+
+    @Get('me')
+    getMeTrip(@Req() req: Request) {
+        return this.tripsService.getMeTrip(req.user as User);
     }
 
     @ApiOperation({summary: 'Удалить свою поездку в качестве водителя'})
@@ -53,8 +59,10 @@ export class TripsController {
     @ApiResponse({type: JoinTripError3Dto, status: 402})
     @ApiResponse({type: JoinTripError4Dto, status: 403})
     @Patch('join/:id')
-    async joinTrip(@Param('id') id: number, @Req() req: Request) {
-        return await this.tripsService.joinTrip(id, req.user as User);
+    async joinTrip(@Param('id') id: number,
+                   @Body() addPassengersDto: AddPassengersDto,
+                   @Req() req: Request) {
+        return await this.tripsService.joinTrip(id, addPassengersDto, req.user as User);
     }
 
     @ApiOperation({summary: 'Покинуть поездку'})

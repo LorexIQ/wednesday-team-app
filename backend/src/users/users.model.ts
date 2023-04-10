@@ -11,7 +11,7 @@ interface UserCreationAttrs {
 
 @Table({tableName: 'users'})
 export class User extends Model<User, UserCreationAttrs> {
-  @ApiProperty({default: 1})
+  @ApiProperty({default: 0})
   @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
   id: number;
 
@@ -27,22 +27,29 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({type: DataType.STRING, allowNull: false, unique: true})
   phone: string;
 
+  @ApiProperty({default: '$2a$10$K7Js7Q...', minimum: 8, maximum: 20})
   @Column({type: DataType.STRING, allowNull: false})
   password: string;
 
+  @ApiProperty({default: () => Trip})
   @ForeignKey(() => Trip)
   @Column({type: DataType.INTEGER})
   selfTripId: number;
+
+  @ApiProperty({default: () => Trip})
+  @ForeignKey(() => Trip)
+  @Column({type: DataType.INTEGER})
+  tripId: number;
+
+  @ApiProperty({default: null, required: false})
+  @Column({type: DataType.INTEGER})
+  addPassengers: number;
 
   @HasOne(() => Trip)
   selfTrip: Trip;
 
   @BelongsTo(() => Trip)
   participantTrip: Trip;
-
-  @ForeignKey(() => Trip)
-  @Column({type: DataType.INTEGER})
-  passengersId: number;
 
   @ApiProperty({default: new Date()})
   createdAt: Date;

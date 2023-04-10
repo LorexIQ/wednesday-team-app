@@ -3,6 +3,7 @@ import {TripDto} from "./dto/trip.dto";
 import {InjectModel} from "@nestjs/sequelize";
 import {Trip} from "./trips.model";
 import {User} from "../users/users.model";
+import {AddPassengersDto} from "./dto/add-passengers.dto";
 
 @Injectable()
 export class TripsService {
@@ -19,6 +20,11 @@ export class TripsService {
     async getTrips(): Promise<Trip[]> {
         return await this.tripsModel.findAll({include: {all: true}});
     }
+    async getMeTrip(user: User) {
+        if (!user.selfTripId || !user.tripId) {
+
+        }
+    }
     async getTripById(id: number): Promise<Trip> {
         return await this.tripsModel.findOne({
             where: {id},
@@ -32,6 +38,10 @@ export class TripsService {
         if (!user.selfTripId)
             throw new HttpException('Поездка пользователя не найдена', HttpStatus.BAD_REQUEST);
         const trip = await this.getTripById(user.selfTripId);
+        await User.update(
+            {addPassengers: null},
+            {where: {id: trip.passengers.map((user: User) => user.id)}}
+        );
         await trip.$set('passengers', []);
         user.selfTripId = null;
         await user.save();
@@ -39,16 +49,17 @@ export class TripsService {
         return;
     }
 
-    async joinTrip(id: number, user: User): Promise<Trip> {
+    async joinTrip(id: number, addPassengersDto: AddPassengersDto, user: User): Promise<Trip> {
         const trip = await this.getTripById(id);
         if (!trip)
             throw new HttpException('Поездка не найдена', 400);
-        else if (trip.complected)
+        else if (this.isTripComplete(trip, addPassengersDto.addPassengers))
             throw new HttpException('В машине нет мест', 401);
         else if (this.isUserInTripPassengers(user, trip))
             throw new HttpException('Вы уже являетесь пассажиром', 402);
         else if (user.selfTripId)
             throw new HttpException('Вы являетесь водителем', 403);
+        await user.update({addPassengers: addPassengersDto.addPassengers});
         await trip.$add('passengers', user.id);
         await trip.reload();
         return trip;
@@ -56,14 +67,25 @@ export class TripsService {
     async leaveTrip(user: User): Promise<void> {
         if (user.selfTripId)
             throw new HttpException('Вы являетесь водителем', HttpStatus.BAD_REQUEST);
-        else if (!user.passengersId)
+        else if (!user.tripId)
             throw new HttpException('Вы не являеетесь пассажиром', HttpStatus.BAD_REQUEST);
-        const trip = await this.getTripById(user.passengersId);
+        const trip = await this.getTripById(user.tripId);
         await trip.$remove('passengers', user.id);
+        await user.update({addPassengers: null});
         return;
     }
 
     private isUserInTripPassengers(user: User, trip: Trip): Boolean {
         return trip.passengers.some(us => us.id === user.id);
+    }
+    private isTripComplete(trip: Trip, addPassengers?: number) {
+        const getInnerCount = () => {
+            return trip.passengers.reduce((accum: number, user: User): number => accum + user.addPassengers + 1, 0);
+        };
+        if (addPassengers) {
+            return getInnerCount() + addPassengers + 1 > trip.places;
+        } else {
+            return getInnerCount() >= trip.places;
+        }
     }
 }

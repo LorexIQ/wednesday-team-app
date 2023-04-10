@@ -1,25 +1,31 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsDate, IsNotEmpty, IsNumber, Length} from "class-validator";
+import {IsNotEmpty, IsNumber, IsString, Max, Min} from "class-validator";
 
 export class TripDto {
     @IsNotEmpty()
-    @IsNumber()
-    @ApiProperty({default: 53.251605})
-    from: number;
+    @IsString()
+    @ApiProperty({default: '53.251605|53.251605'})
+    from: string;
 
     @IsNotEmpty()
-    @IsNumber()
-    @ApiProperty({default: 34.374174})
-    to: number;
+    @IsString()
+    @ApiProperty({default: '53.251605|53.251605'})
+    to: string;
 
     @IsNotEmpty()
-    @IsDate()
     @ApiProperty({default: new Date()})
     date: Date;
 
     @IsNotEmpty()
     @IsNumber()
-    @Length(1, 4)
+    @Min(1)
+    @Max(4)
     @ApiProperty({default: 2, minimum: 1, maximum: 4})
     places: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @Min(0)
+    @ApiProperty({default: 1000, minimum: 0})
+    priceForPlace: number;
 }

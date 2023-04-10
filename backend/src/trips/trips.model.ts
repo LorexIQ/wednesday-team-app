@@ -3,8 +3,8 @@ import {User} from "../users/users.model";
 import {ApiProperty} from "@nestjs/swagger";
 
 interface TripCreationAttrs {
-    from: number;
-    to: number;
+    from: string;
+    to: string;
     date: Date;
     places: number;
     driverId: number;
@@ -16,13 +16,13 @@ export class Trip extends Model<Trip, TripCreationAttrs> {
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
-    @ApiProperty({default: 53.251605})
-    @Column({type: DataType.INTEGER, allowNull: false})
-    from: number;
+    @ApiProperty({default: '53.251605|53.251605'})
+    @Column({type: DataType.STRING, allowNull: false})
+    from: string;
 
-    @ApiProperty({default: 34.374174})
-    @Column({type: DataType.INTEGER, allowNull: false})
-    to: number;
+    @ApiProperty({default: '53.251605|53.251605'})
+    @Column({type: DataType.STRING, allowNull: false})
+    to: string;
 
     @ApiProperty({default: new Date()})
     @Column({type: DataType.DATE, allowNull: false})
@@ -32,9 +32,9 @@ export class Trip extends Model<Trip, TripCreationAttrs> {
     @Column({type: DataType.INTEGER, allowNull: false})
     places: number;
 
-    @ApiProperty({default: false})
-    @Column({type: DataType.BOOLEAN, defaultValue: false})
-    complected: boolean;
+    // @ApiProperty({default: false})
+    // @Column({type: DataType.BOOLEAN, defaultValue: false})
+    // complected: boolean;
 
     @ApiProperty({type: () => User})
     @ForeignKey(() => User)
@@ -45,6 +45,6 @@ export class Trip extends Model<Trip, TripCreationAttrs> {
     driver: User;
 
     @ApiProperty({type: () => User, isArray: true})
-    @HasMany(() => User, 'passengersId')
+    @HasMany(() => User, 'tripId')
     passengers: User[]
 }
