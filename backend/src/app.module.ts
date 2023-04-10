@@ -5,6 +5,8 @@ import { UsersModule } from './users/users.module';
 import { User } from "./users/users.model";
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
+import { TripsModule } from './trips/trips.module';
+import {Trip} from "./trips/trips.model";
 
 @Module({
   imports: [
@@ -18,11 +20,13 @@ import { AppController } from './app.controller';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User],
-      autoLoadModels: true
+      models: [User, Trip],
+      autoLoadModels: true,
+      logging: false
     }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    TripsModule
   ],
   controllers: [AppController],
   providers: [],
