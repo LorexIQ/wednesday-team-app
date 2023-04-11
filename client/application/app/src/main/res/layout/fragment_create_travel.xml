@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/main_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="CREATE NEW TRAVEL"
+        android:textSize="24dp"
+        android:layout_weight="10"/>
+
+    <Button
+        android:id="@+id/button_set_date"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="set date"
+        android:textSize="24dp"
+        android:layout_weight="1"/>
+
+
+</LinearLayout>
