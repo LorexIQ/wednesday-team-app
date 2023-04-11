@@ -36,35 +36,39 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({type: DataType.INTEGER})
   addPassengers: number;
 
-  @ApiProperty({default: () => Trip})
+  @ApiProperty({default: 0})
   @ForeignKey(() => Trip)
   @Column({type: DataType.INTEGER})
   selfTripId: number;
 
-  @ApiProperty({default: () => Trip})
+  @ApiProperty({default: 0})
   @ForeignKey(() => Trip)
   @Column({type: DataType.INTEGER})
   tripId: number;
 
-  @ApiProperty({default: () => Car})
+  @ApiProperty({default: 0})
   @ForeignKey(() => Car)
   @Column({type: DataType.INTEGER})
   carId: number;
 
-  @ApiProperty({default: () => RequestTrip})
+  @ApiProperty({default: 0})
   @ForeignKey(() => RequestTrip)
   @Column({type: DataType.INTEGER})
   requestTripId: number;
 
+  @ApiProperty({type: () => Trip})
   @HasOne(() => Trip)
   selfTrip: Trip;
 
+  @ApiProperty({type: () => Trip})
   @BelongsTo(() => Trip, 'tripId')
   trip: Trip;
 
+  @ApiProperty({type: () => Car})
   @HasOne(() => Car)
   car: Car;
 
+  @ApiProperty({type: () => RequestTrip})
   @HasOne(() => RequestTrip)
   requestTrip: RequestTrip;
 

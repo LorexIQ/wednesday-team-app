@@ -37,11 +37,12 @@ export class Car extends Model<Car, CarCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false})
     color: string;
 
-    @ApiProperty({type: () => User})
+    @ApiProperty({default: 0})
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER, unique: true, allowNull: null})
     ownerId: number;
 
+    @ApiProperty({type: () => User})
     @BelongsTo(() => User, 'ownerId')
     owner: User;
 }

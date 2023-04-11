@@ -37,11 +37,12 @@ export class RequestTrip extends Model<RequestTrip, RequestTripCreationAttrs> {
     @Column({type: DataType.INTEGER, allowNull: false})
     priceForPlace: number;
 
-    @ApiProperty({type: () => User})
+    @ApiProperty({default: 0})
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER, unique: true, allowNull: null})
     ownerId: number;
 
+    @ApiProperty({type: () => User})
     @BelongsTo(() => User, 'ownerId')
     owner: User;
 }

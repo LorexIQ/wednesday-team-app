@@ -40,11 +40,12 @@ export class Trip extends Model<Trip, TripCreationAttrs> {
     @Column({type: DataType.BOOLEAN, defaultValue: false})
     complected: boolean;
 
-    @ApiProperty({type: () => User})
+    @ApiProperty({default: 0})
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER, unique: true, allowNull: null})
     driverId: number;
 
+    @ApiProperty({type: () => User})
     @BelongsTo(() => User, 'driverId')
     driver: User;
 
