@@ -7,6 +7,7 @@ interface RequestTripCreationAttrs {
     to: string;
     date: Date;
     addPassengers: number;
+    priceForPlace: number;
     ownerId: number;
 }
 
@@ -28,9 +29,13 @@ export class RequestTrip extends Model<RequestTrip, RequestTripCreationAttrs> {
     @Column({type: DataType.DATE, allowNull: false})
     date: Date;
 
-    @ApiProperty({default: null, minimum: 1, maximum: 3})
-    @Column({type: DataType.INTEGER})
+    @ApiProperty({default: 0, minimum: 0, maximum: 3})
+    @Column({type: DataType.INTEGER, defaultValue: 0})
     addPassengers: number;
+
+    @ApiProperty({default: 0, minimum: 0})
+    @Column({type: DataType.INTEGER, allowNull: false})
+    priceForPlace: number;
 
     @ApiProperty({type: () => User})
     @ForeignKey(() => User)

@@ -11,7 +11,9 @@ export class TripsService {
 
     async createTrip(tripDto: TripDto, user: User): Promise<Trip> {
         if (user.selfTripId || user.tripId)
-            throw new HttpException("Пользователь уже имеет поездку", HttpStatus.BAD_REQUEST);
+            throw new HttpException('Пользователь уже имеет поездку', 400);
+        else if (user.requestTripId)
+            throw new HttpException('Пользователь имеет запрос на поездку. Отмените его, чтобы создать свою', 401)
         const trip = await this.tripsModel.create({...tripDto, driverId: user.id});
         await user.update({selfTripId: trip.id});
         return this.getTripById(trip.id);
@@ -55,16 +57,19 @@ export class TripsService {
         const trip = await this.getTripById(id);
         if (!trip)
             throw new HttpException('Поездка не найдена', 400);
+        else if (user.requestTripId)
+            throw new HttpException('Пользователь имеет запрос на поездку. Отмените его, чтобы присоединиться к поездке', 401);
         else if (this.isTripComplete(trip, addPassengersDto.addPassengers))
-            throw new HttpException('В машине нет мест', 401);
+            throw new HttpException('В машине нет мест', 402);
         else if (this.isUserInTripPassengers(user, trip))
-            throw new HttpException('Вы уже являетесь пассажиром', 402);
+            throw new HttpException('Вы уже являетесь пассажиром', 403);
         else if (user.selfTripId)
-            throw new HttpException('Вы являетесь водителем', 403);
+            throw new HttpException('Вы являетесь водителем', 404);
         await user.update({addPassengers: addPassengersDto.addPassengers});
         await trip.$add('passengers', user.id);
         await trip.reload();
-        await trip.update({placesIsFilled: this.getFilledTripPlaces(trip), complected: this.isTripComplete(trip)})
+        await trip.update({placesIsFilled: this.getFilledTripPlaces(trip), complected: this.isTripComplete(trip)});
+        await trip.reload();
         return trip;
     }
     async leaveTrip(user: User): Promise<void> {
@@ -73,7 +78,7 @@ export class TripsService {
         else if (!user.tripId)
             throw new HttpException('Вы не являеетесь пассажиром', HttpStatus.BAD_REQUEST);
         const trip = await this.getTripById(user.tripId);
-        await trip.update({placesIsFilled: trip.placesIsFilled - (1 + user.addPassengers)});
+        await trip.update({placesIsFilled: trip.placesIsFilled - (1 + user.addPassengers), complected: false});
         await trip.$remove('passengers', user.id);
         await user.update({addPassengers: null});
         return;
