@@ -29,7 +29,9 @@ export class RequestTripsService {
             include: {all: true, attributes: {exclude: ['password']}}
         });
     }
-    async getReqTripsInZone(findDto: FindDto): Promise<FoundTripDto[]> {
+    async getReqTripsInZone(user: User, findDto: FindDto): Promise<FoundTripDto[]> {
+        if (!user.selfTripId)
+            throw new HttpException('Вы не являетесь водителем', HttpStatus.BAD_REQUEST);
         const reqTrips = await this.getAllReqTrips();
         const foundTrips = reqTrips.reduce((accum: FoundTripDto[], reqTrip: RequestTrip) => {
             // Совпанение геолокаций

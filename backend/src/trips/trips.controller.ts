@@ -19,6 +19,7 @@ import {UserData} from "../users/decorator/user-data.decorator";
 import {DeleteTripError1Dto, DeleteTripError2Dto} from "../swagger/delete-trip-error.dto";
 import {FindDto} from "./dto/find.dto";
 import {FoundTripDto} from "./dto/found-trip.dto";
+import {FindTripErrorDto} from "../swagger/find-trip-error.dto";
 
 @UseGuards(JwtGuard)
 @ApiTags('Поездки')
@@ -45,9 +46,10 @@ export class TripsController {
     @ApiOperation({summary: 'Поиск поездок в радиусе начальной и конечной точек'})
     @ApiBody({type: FindDto})
     @ApiResponse({ type: [FoundTripDto], status: 200})
+    @ApiResponse({ type: [FindTripErrorDto], status: 400})
     @Post('find')
-    async getTripsInZone(@Body() findDto: FindDto): Promise<FoundTripDto[]> {
-        return await this.tripsService.getTripsInZone(findDto)
+    async getTripsInZone(@UserData() user: User, @Body() findDto: FindDto): Promise<FoundTripDto[]> {
+        return await this.tripsService.getTripsInZone(user, findDto)
     }
 
     @ApiOperation({summary: 'Возвращает активную поездку'})

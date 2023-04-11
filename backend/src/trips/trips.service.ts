@@ -28,7 +28,9 @@ export class TripsService {
             attributes: {exclude: ['password']}
         });
     }
-    async getTripsInZone(findDto: FindDto): Promise<FoundTripDto[]> {
+    async getTripsInZone(user: User, findDto: FindDto): Promise<FoundTripDto[]> {
+        if (user.selfTripId || user.tripId || user.requestTripId)
+            throw new HttpException('Вы не можете искать поездки. Отмените текущий поиск или поездку', HttpStatus.BAD_REQUEST);
         const trips = await this.getTrips();
         const foundTrips = trips.reduce((accum: FoundTripDto[], trip: Trip) => {
             // Совпанение геолокаций
