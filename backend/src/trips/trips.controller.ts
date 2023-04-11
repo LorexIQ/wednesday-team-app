@@ -1,7 +1,6 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {TripsService} from "./trips.service";
 import {JwtGuard} from "../auth/guard";
-import {Request} from "express";
 import {User} from "../users/users.model";
 import {ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {TripDto} from "./dto/trip.dto";
@@ -17,6 +16,7 @@ import {
 import {LeaveTripError1Dto, LeaveTripError2Dto} from "../swagger/leave-trip-error.dto";
 import {AddPassengersDto} from "./dto/add-passengers.dto";
 import {MeTripErrorDto} from "../swagger/me-trip-error.dto";
+import {UserData} from "../users/decorator/user-data.decorator";
 
 @UseGuards(JwtGuard)
 @ApiTags('Поездки')
@@ -29,8 +29,8 @@ export class TripsController {
     @ApiResponse({ type: Trip, status: 200})
     @ApiResponse({ type: CreateTripErrorDto, status: 400})
     @Post()
-    createTrip(@Body() tripDto: TripDto, @Req() req: Request): Promise<Trip> {
-        return this.tripsService.createTrip(tripDto, req.user as User);
+    createTrip(@Body() tripDto: TripDto, @UserData() user: User): Promise<Trip> {
+        return this.tripsService.createTrip(tripDto, user);
     }
 
     @ApiOperation({summary: 'Получить все поездки'})
@@ -44,16 +44,16 @@ export class TripsController {
     @ApiResponse({ type: Trip, status: 200})
     @ApiResponse({ type: MeTripErrorDto, status: 400})
     @Get('me')
-    getMeTrip(@Req() req: Request): Promise<Trip> {
-        return this.tripsService.getMeTrip(req.user as User);
+    getMeTrip(@UserData() user: User): Promise<Trip> {
+        return this.tripsService.getMeTrip(user);
     }
 
     @ApiOperation({summary: 'Удалить свою поездку в качестве водителя'})
     @ApiResponse({ type: Object, status: 200})
     @ApiResponse({ type: DeleteTripErrorDto, status: 400})
     @Delete('me')
-    deleteTrip(@Req() req: Request): Promise<void> {
-        return this.tripsService.deleteTrip(req.user as User);
+    deleteTrip(@UserData() user: User): Promise<void> {
+        return this.tripsService.deleteTrip(user);
     }
 
     @ApiOperation({summary: 'Присоединиться к поездке'})
@@ -65,8 +65,8 @@ export class TripsController {
     @Patch('join/:id')
     async joinTrip(@Param('id') id: number,
                    @Body() addPassengersDto: AddPassengersDto,
-                   @Req() req: Request) {
-        return await this.tripsService.joinTrip(id, addPassengersDto, req.user as User);
+                   @UserData() user: User) {
+        return await this.tripsService.joinTrip(id, addPassengersDto, user);
     }
 
     @ApiOperation({summary: 'Покинуть поездку'})
@@ -74,8 +74,8 @@ export class TripsController {
     @ApiResponse({type: LeaveTripError1Dto, status: 400})
     @ApiResponse({type: LeaveTripError2Dto, status: 401})
     @Patch('leave')
-    async leaveTrip(@Req() req: Request) {
-        return this.tripsService.leaveTrip(req.user as User);
+    async leaveTrip(@UserData() user: User) {
+        return this.tripsService.leaveTrip(user);
     }
 
 }

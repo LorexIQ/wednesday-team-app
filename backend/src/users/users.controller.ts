@@ -1,10 +1,10 @@
-import { Controller, Get, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
 import { JwtGuard } from "../auth/guard";
-import { Request } from "express";
 import { User } from "./users.model";
 import { MeErrorDto } from "../swagger/me-error.dto";
+import {UserData} from "./decorator/user-data.decorator";
 
 @UseGuards(JwtGuard)
 @ApiTags('Пользователи')
@@ -16,7 +16,7 @@ export class UsersController {
   @ApiResponse({ type: User, status: 200})
   @ApiResponse({ type: MeErrorDto, status: 400})
   @Get('me')
-  getMe(@Req() req: Request) {
-    return req.user;
+  getMe(@UserData() user: User) {
+    return user;
   }
 }

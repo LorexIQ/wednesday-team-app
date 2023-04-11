@@ -2,6 +2,7 @@ import {BelongsTo, Column, DataType, ForeignKey, HasOne, Model, Table} from "seq
 import { ApiProperty } from "@nestjs/swagger";
 import {Trip} from "../trips/trips.model";
 import {Car} from "../cars/cars.model";
+import {RequestTrip} from "../request-trips/request-trips.model";
 
 interface UserCreationAttrs {
   email: string;
@@ -46,9 +47,14 @@ export class User extends Model<User, UserCreationAttrs> {
   tripId: number;
 
   @ApiProperty({default: () => Car})
-  @Column({type: DataType.INTEGER})
   @ForeignKey(() => Car)
+  @Column({type: DataType.INTEGER})
   carId: number;
+
+  @ApiProperty({default: () => RequestTrip})
+  @ForeignKey(() => RequestTrip)
+  @Column({type: DataType.INTEGER})
+  requestTripId: number;
 
   @HasOne(() => Trip)
   selfTrip: Trip;
@@ -58,6 +64,9 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @HasOne(() => Car)
   car: Car;
+
+  @HasOne(() => RequestTrip)
+  requestTrip: RequestTrip;
 
   @ApiProperty({default: new Date()})
   createdAt: Date;

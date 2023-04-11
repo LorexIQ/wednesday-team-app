@@ -5,12 +5,13 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { User } from "./users.model";
 import {Trip} from "../trips/trips.model";
 import {Car} from "../cars/cars.model";
+import {RequestTrip} from "../request-trips/request-trips.model";
 
 @Module({
   providers: [UsersService],
   controllers: [UsersController],
   imports: [
-    SequelizeModule.forFeature([User, Trip, Car])
+    SequelizeModule.forFeature([User, Trip, Car, RequestTrip])
   ],
   exports: [UsersService]
 })
