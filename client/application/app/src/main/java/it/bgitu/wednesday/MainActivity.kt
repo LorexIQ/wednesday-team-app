@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             when(item.itemId) {
                 R.id.item_1 -> {
                     fragment = if (checkAuthorization(token ?: ""))
-                        FragmentLogIn.newInstance() else FragmentLogIn.newInstance()
+                        FragmentHome.newInstance() else FragmentLogIn.newInstance()
                     resultFlag = true
                 }
                 R.id.item_2 -> {
