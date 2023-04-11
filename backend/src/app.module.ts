@@ -14,7 +14,6 @@ import {Car} from "./cars/cars.model";
 import {RequestTripsModule} from './request-trips/request-trips.module';
 import {RequestTrip} from "./request-trips/request-trips.model";
 import { NotifyModule } from './notify/notify.module';
-import { CronModule } from './cron/cron.module';
 
 @Module({
     imports: [
@@ -41,8 +40,7 @@ import { CronModule } from './cron/cron.module';
         TripsModule,
         CarsModule,
         RequestTripsModule,
-        NotifyModule,
-        CronModule
+        NotifyModule
     ],
     controllers: [AppController],
     providers: [
