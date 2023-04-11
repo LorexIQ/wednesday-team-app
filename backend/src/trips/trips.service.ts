@@ -10,7 +10,7 @@ export class TripsService {
     constructor(@InjectModel(Trip) private tripsModel: typeof Trip) {}
 
     async createTrip(tripDto: TripDto, user: User): Promise<Trip> {
-        if (user.selfTripId)
+        if (user.selfTripId || user.tripId)
             throw new HttpException("Пользователь уже имеет поездку", HttpStatus.BAD_REQUEST);
         const trip = await this.tripsModel.create({...tripDto, driverId: user.id});
         await user.update({selfTripId: trip.id});

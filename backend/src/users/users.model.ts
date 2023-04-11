@@ -53,8 +53,8 @@ export class User extends Model<User, UserCreationAttrs> {
   @HasOne(() => Trip)
   selfTrip: Trip;
 
-  @BelongsTo(() => Trip)
-  participantTrip: Trip;
+  @BelongsTo(() => Trip, 'tripId')
+  trip: Trip;
 
   @HasOne(() => Car)
   car: Car;
