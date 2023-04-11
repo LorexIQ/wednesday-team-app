@@ -9,6 +9,8 @@ import { TripsModule } from './trips/trips.module';
 import {Trip} from "./trips/trips.model";
 import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";
 import {APP_GUARD} from "@nestjs/core";
+import {CarsModule} from "./cars/cars.module";
+import {Car} from "./cars/cars.model";
 
 @Module({
   imports: [
@@ -26,13 +28,14 @@ import {APP_GUARD} from "@nestjs/core";
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Trip],
+      models: [User, Trip, Car],
       autoLoadModels: true,
       logging: false
     }),
     UsersModule,
     AuthModule,
-    TripsModule
+    TripsModule,
+    CarsModule
   ],
   controllers: [AppController],
   providers: [

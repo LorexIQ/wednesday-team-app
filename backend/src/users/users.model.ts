@@ -1,6 +1,7 @@
 import {BelongsTo, Column, DataType, ForeignKey, HasOne, Model, Table} from "sequelize-typescript";
 import { ApiProperty } from "@nestjs/swagger";
 import {Trip} from "../trips/trips.model";
+import {Car} from "../cars/cars.model";
 
 interface UserCreationAttrs {
   email: string;
@@ -27,9 +28,12 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({type: DataType.STRING, allowNull: false, unique: true})
   phone: string;
 
-  @ApiProperty({default: '$2a$10$K7Js7Q...', minimum: 8, maximum: 20})
   @Column({type: DataType.STRING, allowNull: false})
   password: string;
+
+  @ApiProperty({default: null, required: false})
+  @Column({type: DataType.INTEGER})
+  addPassengers: number;
 
   @ApiProperty({default: () => Trip})
   @ForeignKey(() => Trip)
@@ -41,15 +45,19 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({type: DataType.INTEGER})
   tripId: number;
 
-  @ApiProperty({default: null, required: false})
+  @ApiProperty({default: () => Car})
   @Column({type: DataType.INTEGER})
-  addPassengers: number;
+  @ForeignKey(() => Car)
+  carId: number;
 
   @HasOne(() => Trip)
   selfTrip: Trip;
 
   @BelongsTo(() => Trip)
   participantTrip: Trip;
+
+  @HasOne(() => Car)
+  car: Car;
 
   @ApiProperty({default: new Date()})
   createdAt: Date;

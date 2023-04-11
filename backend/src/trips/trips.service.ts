@@ -13,12 +13,14 @@ export class TripsService {
         if (user.selfTripId)
             throw new HttpException("Пользователь уже имеет поездку", HttpStatus.BAD_REQUEST);
         const trip = await this.tripsModel.create({...tripDto, driverId: user.id});
-        await trip.save();
         await user.update({selfTripId: trip.id});
         return this.getTripById(trip.id);
     }
     async getTrips(): Promise<Trip[]> {
-        return await this.tripsModel.findAll({include: {all: true}});
+        return await this.tripsModel.findAll({
+            include: [{all: true, attributes: {exclude: ['password']}}],
+            attributes: {exclude: ['password']}
+        });
     }
     async getMeTrip(user: User): Promise<Trip> {
         if (!user.selfTripId && !user.tripId)

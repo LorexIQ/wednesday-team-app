@@ -12,13 +12,11 @@ export class UsersService {
     return await this.userModel.create(createDto);
   }
 
-  getMe() {
-    return { test: 123 };
-  }
   async getById(id: number): Promise<User> {
     return await this.userModel.findOne({
       where: {id},
-      attributes: { exclude: ['password']}
+      include: [{all: true, attributes: {exclude: ['password']}}],
+      attributes: {exclude: ['password']}
     });
   }
   async getByEmail(email: string): Promise<User> {
