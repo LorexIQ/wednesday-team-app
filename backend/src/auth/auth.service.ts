@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { UserLoginDto } from "../users/dto/user-login.dto";
+import { UserLoginDto } from "./dto/user-login.dto";
 import { UserCreateDto } from "../users/dto/user-create.dto";
 import { UsersService } from "../users/users.service";
 import { JwtService } from "@nestjs/jwt";
@@ -15,6 +15,10 @@ export class AuthService {
     const user = await this.usersService.getByEmail(loginDto.email);
     const passwordEquals = await bcrypt.compare(loginDto.password, user?.password ?? '');
     if (!user || !passwordEquals) throw new HttpException('Пользователь с такими данными не найден', HttpStatus.BAD_REQUEST);
+    if (loginDto?.deviceToken != user?.deviceToken) {
+      await user.update({deviceToken: loginDto.deviceToken ?? null})
+      user.deviceToken = loginDto.deviceToken;
+    }
     return this.generateToken(user);
   }
   async registration(createDto: UserCreateDto): Promise<{token: string}> {
@@ -29,7 +33,8 @@ export class AuthService {
     const payload = {
       id: user.id,
       name: user.name,
-      phone: user.phone
+      phone: user.phone,
+      _t: user.deviceToken
     };
     return {token: this.jwtService.sign(payload)};
   }

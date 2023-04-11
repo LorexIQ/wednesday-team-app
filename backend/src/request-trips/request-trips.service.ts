@@ -84,7 +84,7 @@ export class RequestTripsService {
         const {addPassengers, owner} = reqTrip;
         await this.deleteReqByTrip(reqTrip.id);
         await owner.reload();
-        return await this.tripsService.joinTrip(trip.id, {addPassengers}, owner);
+        return await this.tripsService.joinTrip(trip.id, {addPassengers}, owner, owner);
     }
 
     private async getReqTripById(id: number): Promise<RequestTrip> {

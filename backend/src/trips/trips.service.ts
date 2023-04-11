@@ -9,10 +9,12 @@ import {FoundTripDto} from "./dto/found-trip.dto";
 import compareGeoWithZoneGeo from "../utils/compareGeoWithZoneGeo";
 import compareDates from "../utils/compareDates";
 import geoDecode from "../utils/geoDecode";
+import {NotifyService} from "../notify/notify.service";
 
 @Injectable()
 export class TripsService {
-    constructor(@InjectModel(Trip) private tripsModel: typeof Trip) {}
+    constructor(@InjectModel(Trip) private tripsModel: typeof Trip,
+                private notifyService: NotifyService) {}
 
     async createTrip(tripDto: TripDto, user: User): Promise<Trip> {
         if (user.selfTripId || user.tripId)
@@ -89,7 +91,7 @@ export class TripsService {
         return;
     }
 
-    async joinTrip(id: number, addPassengersDto: AddPassengersDto, user: User): Promise<Trip> {
+    async joinTrip(id: number, addPassengersDto: AddPassengersDto, user: User, notifyTarget?: User): Promise<Trip> {
         const trip = await this.getTripById(id);
         if (!trip)
             throw new HttpException('Поездка не найдена', 400);
@@ -106,6 +108,15 @@ export class TripsService {
         await trip.reload();
         await trip.update({placesIsFilled: this.getFilledTripPlaces(trip), complected: this.isTripComplete(trip)});
         await trip.reload();
+        await this.notifyService.sendNotify(notifyTarget ? {
+            title: 'Вас добавили в поездку 😊',
+            body: 'Зайдите в приложение, чтобы узнать подробности',
+            token: notifyTarget.deviceToken
+        } : {
+            title: 'К вам присоединился пассажир 😊',
+            body: 'Зайдите в приложение, чтобы узнать подробности',
+            token: trip.driver.deviceToken
+        });
         return trip;
     }
     async leaveTrip(user: User): Promise<void> {
@@ -117,6 +128,11 @@ export class TripsService {
         await trip.update({placesIsFilled: trip.placesIsFilled - (1 + user.addPassengers), complected: false});
         await trip.$remove('passengers', user.id);
         await user.update({addPassengers: null});
+        await this.notifyService.sendNotify({
+            title: 'От вас ушел пассажир 😞',
+            body: 'Зайдите в приложение, чтобы подыскать нового',
+            token: trip.driver.deviceToken
+        })
         return;
     }
 

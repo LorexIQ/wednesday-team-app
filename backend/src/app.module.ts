@@ -13,6 +13,7 @@ import {CarsModule} from "./cars/cars.module";
 import {Car} from "./cars/cars.model";
 import {RequestTripsModule} from './request-trips/request-trips.module';
 import {RequestTrip} from "./request-trips/request-trips.model";
+import { NotifyModule } from './notify/notify.module';
 
 @Module({
     imports: [
@@ -38,7 +39,8 @@ import {RequestTrip} from "./request-trips/request-trips.model";
         AuthModule,
         TripsModule,
         CarsModule,
-        RequestTripsModule
+        RequestTripsModule,
+        NotifyModule
     ],
     controllers: [AppController],
     providers: [

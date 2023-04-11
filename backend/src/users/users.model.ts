@@ -36,6 +36,10 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({type: DataType.INTEGER})
   addPassengers: number;
 
+  @ApiProperty({default: "cLssuU3gT5uWYJCwkK9r4l:APA..."})
+  @Column({type: DataType.STRING, defaultValue: null})
+  deviceToken: string;
+
   @ApiProperty({default: 0})
   @ForeignKey(() => Trip)
   @Column({type: DataType.INTEGER})
