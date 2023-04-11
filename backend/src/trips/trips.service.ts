@@ -4,6 +4,10 @@ import {InjectModel} from "@nestjs/sequelize";
 import {Trip} from "./trips.model";
 import {User} from "../users/users.model";
 import {AddPassengersDto} from "./dto/add-passengers.dto";
+import {FindDto} from "./dto/find.dto";
+import {FoundTripDto} from "./dto/found-trip.dto";
+import compareGeoWithZoneGeo from "../utils/compareGeoWithZoneGeo";
+import compareDates from "../utils/compareDates";
 
 @Injectable()
 export class TripsService {
@@ -23,6 +27,30 @@ export class TripsService {
             include: [{all: true, attributes: {exclude: ['password']}}],
             attributes: {exclude: ['password']}
         });
+    }
+    async getTripsInZone(findDto: FindDto): Promise<FoundTripDto[]> {
+        const trips = await this.getTrips();
+        const foundTrips = trips.reduce((accum: FoundTripDto[], trip: Trip) => {
+            // Совпанение геолокаций
+            const [fromInZone, fromDistance] = compareGeoWithZoneGeo(trip.from, findDto.from, findDto.fromRadius);
+            const [toInZone, toDistance] = compareGeoWithZoneGeo(trip.to, findDto.to, findDto.toRadius);
+            // Время в диапазоне +-2 часа
+            const isCurrentTime = compareDates(trip.date, new Date(findDto.date), findDto.hoursPadding ?? 2);
+            // Имеются свободные места с учётом пассажиров
+            const isFreePlaces = (trip.places - trip.placesIsFilled) >= findDto.addPassengers + 1;
+            // Цена меньше или на [pricePadding] больше, чем ищет пользователь
+            const isCurrentPrice = trip.priceForPlace <= findDto.priceForPlace ||
+                trip.priceForPlace - (findDto.pricePadding ?? 200) <= findDto.priceForPlace;
+
+            if (fromInZone && toInZone && isCurrentTime && isFreePlaces && isCurrentPrice)
+                accum.push({...trip.dataValues, fromDistance, toDistance} as FoundTripDto);
+            return accum;
+        }, []) as FoundTripDto[];
+        return foundTrips.sort((a, b) =>
+            a.fromDistance === b.fromDistance
+                ? a.toDistance - b.toDistance
+                : a.fromDistance - b.fromDistance
+        );
     }
     async getMeTrip(user: User): Promise<Trip> {
         if (!user.selfTripId && !user.tripId)

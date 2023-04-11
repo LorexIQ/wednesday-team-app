@@ -28,6 +28,10 @@ export class Trip extends Model<Trip, TripCreationAttrs> {
     @Column({type: DataType.DATE, allowNull: false})
     date: Date;
 
+    @ApiProperty({default: 1000})
+    @Column({type: DataType.INTEGER, allowNull: false})
+    priceForPlace: number;
+
     @ApiProperty({default: 2, minimum: 1, maximum: 4})
     @Column({type: DataType.INTEGER, allowNull: false})
     places: number;
