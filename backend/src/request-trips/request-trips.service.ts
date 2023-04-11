@@ -13,9 +13,9 @@ export class RequestTripsService {
 
     async createReqTrip(createReqDto: CreateReqDto, user: User): Promise<RequestTrip> {
         if (user.tripId || user.selfTripId)
-            throw new HttpException('Пользователь уже имеет поездку', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Пользователь уже имеет поездку', 400);
         else if (user.requestTripId)
-            throw new HttpException('Пользователь уже имеет запрос на поездку', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Пользователь уже имеет запрос на поездку', 401);
         const reqTrip = await this.reqTripsModel.create({...createReqDto, ownerId: user.id});
         await user.update({requestTripId: reqTrip.id});
         return this.getReqTripById(reqTrip.id);
@@ -37,7 +37,7 @@ export class RequestTripsService {
         await user.update({requestTripId: null});
         return;
     }
-    async acceptReqTrip(user: User, id: number) {
+    async acceptReqTrip(user: User, id: number): Promise<Trip> {
         const reqTrip = await this.getReqTripById(id);
         if (!reqTrip)
             throw new HttpException('Запрос на поездку не найден', 400)
@@ -47,12 +47,9 @@ export class RequestTripsService {
         if (trip.complected || trip.placesIsFilled + 1 + reqTrip.addPassengers > trip.places)
             throw new HttpException('В машине не хватает мест', 402)
         const {addPassengers, owner} = reqTrip;
-        console.log(addPassengers)
         await this.deleteReqByTrip(reqTrip.id);
         await owner.reload();
         return await this.tripsService.joinTrip(trip.id, {addPassengers}, owner);
-        // await ownerReq.update({addPassengers: reqTrip.addPassengers});
-        // await trip.$add('passengers', ownerReq.id);
     }
 
     private async getReqTripById(id: number): Promise<RequestTrip> {
