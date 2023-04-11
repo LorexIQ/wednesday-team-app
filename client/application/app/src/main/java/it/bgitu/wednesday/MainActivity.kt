@@ -4,6 +4,12 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import it.bgitu.wednesday.databinding.ActivityMainBinding
 import it.bgitu.wednesday.fragments.FragmentCreateTravel
 import it.bgitu.wednesday.fragments.FragmentFindTravel
@@ -16,8 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     private val TOKEN_CACHE: String = "TOKEN"
     private var token: String? = null
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -64,6 +68,7 @@ class MainActivity : AppCompatActivity() {
                         FragmentCreateTravel.newInstance() else FragmentLogIn.newInstance()
                     resultFlag = true
                 }
+
             }
             supportFragmentManager
                 .beginTransaction()
@@ -80,5 +85,8 @@ class MainActivity : AppCompatActivity() {
          else return false*/
         return true
     }
+
+
+
 
 }
