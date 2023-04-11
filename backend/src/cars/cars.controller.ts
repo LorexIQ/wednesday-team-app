@@ -16,25 +16,25 @@ export class CarsController {
     constructor(private carsService: CarsService) {}
 
     @ApiOperation({summary: 'Создать автомобиль'})
-    @ApiBody({ type: RegCarDto })
-    @ApiResponse({ type: Car, status: 200})
-    @ApiResponse({ type: RegCarErrorDto, status: 400})
+    @ApiBody({type: RegCarDto})
+    @ApiResponse({type: Car, status: 200})
+    @ApiResponse({type: RegCarErrorDto, status: 400})
     @Post('reg')
     async regCar(@Body() regCarDto: RegCarDto, @Req() req: Request): Promise<Car> {
         return await this.carsService.regCar(regCarDto, req.user as User);
     }
 
     @ApiOperation({summary: 'Получить сведенья об автомобиле'})
-    @ApiResponse({ type: Car, status: 200})
-    @ApiResponse({ type: NullCarErrorDto, status: 400})
+    @ApiResponse({type: Car, status: 200})
+    @ApiResponse({type: NullCarErrorDto, status: 400})
     @Get('me')
     async getMeCar(@Req() req: Request): Promise<Car> {
         return await this.carsService.getMeCar(req.user as User);
     }
 
     @ApiOperation({summary: 'Удалить свой автомобиль'})
-    @ApiResponse({ type: Object, status: 200})
-    @ApiResponse({ type: NullCarErrorDto, status: 400})
+    @ApiResponse({type: Object, status: 200})
+    @ApiResponse({type: NullCarErrorDto, status: 400})
     @Delete('me')
     async delMeCar(@Req() req: Request): Promise<void> {
         return await this.carsService.delMeCar(req.user as User);

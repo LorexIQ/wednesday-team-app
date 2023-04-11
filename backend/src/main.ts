@@ -13,7 +13,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle("Wednesday Nest API")
     .setDescription("Документация к REST API")
-    .setVersion('1.0.0')
+    .setVersion(process.env.npm_package_version)
     .addTag('App')
     .build();
   const document = SwaggerModule.createDocument(app, config);
