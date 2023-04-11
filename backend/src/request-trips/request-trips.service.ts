@@ -9,6 +9,7 @@ import compareGeoWithZoneGeo from "../utils/compareGeoWithZoneGeo";
 import compareDates from "../utils/compareDates";
 import {FindDto} from "./dto/find.dto";
 import {FoundTripDto} from "./dto/found-trip.dto";
+import geoDecode from "../utils/geoDecode";
 
 @Injectable()
 export class RequestTripsService {
@@ -20,7 +21,12 @@ export class RequestTripsService {
             throw new HttpException('Пользователь уже имеет поездку', 400);
         else if (user.requestTripId)
             throw new HttpException('Пользователь уже имеет запрос на поездку', 401);
-        const reqTrip = await this.reqTripsModel.create({...createReqDto, ownerId: user.id});
+        const reqTrip = await this.reqTripsModel.create({
+            ...createReqDto,
+            ownerId: user.id,
+            fromName: await geoDecode(createReqDto.from),
+            toName: await geoDecode(createReqDto.to),
+        });
         await user.update({requestTripId: reqTrip.id});
         return this.getReqTripById(reqTrip.id);
     }
