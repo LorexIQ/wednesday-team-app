@@ -5,6 +5,10 @@ import {User} from "../users/users.model";
 import {CreateReqDto} from "./dto/create-req.dto";
 import {Trip} from "../trips/trips.model";
 import {TripsService} from "../trips/trips.service";
+import compareGeoWithZoneGeo from "../utils/compareGeoWithZoneGeo";
+import compareDates from "../utils/compareDates";
+import {FindDto} from "./dto/find.dto";
+import {FoundTripDto} from "./dto/found-trip.dto";
 
 @Injectable()
 export class RequestTripsService {
@@ -24,6 +28,29 @@ export class RequestTripsService {
         return await this.reqTripsModel.findAll({
             include: {all: true, attributes: {exclude: ['password']}}
         });
+    }
+    async getReqTripsInZone(findDto: FindDto): Promise<FoundTripDto[]> {
+        const reqTrips = await this.getAllReqTrips();
+        const foundTrips = reqTrips.reduce((accum: FoundTripDto[], reqTrip: RequestTrip) => {
+            // Совпанение геолокаций
+            const [fromInZone, fromDistance] = compareGeoWithZoneGeo(reqTrip.from, findDto.from, findDto.fromRadius);
+            const [toInZone, toDistance] = compareGeoWithZoneGeo(reqTrip.to, findDto.to, findDto.toRadius);
+            // Время в диапазоне +-2 часа
+            const isCurrentTime = compareDates(reqTrip.date, new Date(findDto.date), findDto.hoursPadding ?? 2);
+            // Имеются свободные места с учётом пассажиров
+            const isFreePlaces = reqTrip.addPassengers + 1 === findDto.passengers;
+            // Цена меньше чем ищет водитель
+            const isCurrentPrice = reqTrip.priceForPlace <= findDto.priceForPlace;
+
+            if (fromInZone && toInZone && isCurrentTime && isFreePlaces && isCurrentPrice)
+                accum.push({...reqTrip.dataValues, fromDistance, toDistance} as FoundTripDto);
+            return accum;
+        }, []) as FoundTripDto[];
+        return foundTrips.sort((a, b) =>
+            a.fromDistance === b.fromDistance
+                ? a.toDistance - b.toDistance
+                : a.fromDistance - b.fromDistance
+        );
     }
     async getMeReqTrip(user: User): Promise<RequestTrip> {
         if (!user.requestTripId)

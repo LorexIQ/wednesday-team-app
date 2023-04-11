@@ -18,10 +18,10 @@ export class FindDto {
 
     @IsOptional()
     @IsNumber()
-    @Min(0)
-    @Max(3)
-    @ApiProperty({default: 0, minimum: 0, maximum: 3, required: false})
-    addPassengers?: number;
+    @Min(1)
+    @Max(4)
+    @ApiProperty({default: 2, minimum: 1, maximum: 4})
+    passengers: number;
 
     @IsNotEmpty()
     @IsNumber()

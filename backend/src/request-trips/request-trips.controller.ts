@@ -14,6 +14,8 @@ import {
     AcceptReqTripError2Dto,
     AcceptReqTripError3Dto
 } from "../swagger/accept-req-trip-error.dto";
+import {FindDto} from "./dto/find.dto";
+import {FoundTripDto} from "./dto/found-trip.dto";
 
 @UseGuards(JwtGuard)
 @ApiTags('Запросы на поездку')
@@ -36,6 +38,14 @@ export class RequestTripsController {
     @Get('all')
     async getAllReqTrips(): Promise<RequestTrip[]> {
         return await this.reqTripsService.getAllReqTrips();
+    }
+
+    @ApiOperation({summary: 'Поиск запросов на поездку в радиусе начальной и конечной точек'})
+    @ApiBody({type: FindDto})
+    @ApiResponse({ type: [FoundTripDto], status: 200})
+    @Post('find')
+    async getReqTripsInZone(@Body() findDto: FindDto): Promise<FoundTripDto[]> {
+        return await this.reqTripsService.getReqTripsInZone(findDto)
     }
 
     @ApiOperation({summary: 'Получить текущий запрос пользователя на поездку'})
