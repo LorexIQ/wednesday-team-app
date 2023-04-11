@@ -5,8 +5,6 @@ import {Car} from "../cars/cars.model";
 import {RequestTrip} from "../request-trips/request-trips.model";
 
 interface UserCreationAttrs {
-  email: string;
-  name: string;
   phone: string;
   password: string;
 }
@@ -17,12 +15,12 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
   id: number;
 
-  @ApiProperty({default: "example@test.ru"})
-  @Column({type: DataType.STRING, allowNull: false, unique: true})
+  @ApiProperty({default: "example@test.ru", required: false})
+  @Column({type: DataType.STRING, unique: true})
   email: string;
 
-  @ApiProperty({default: "Иванов Иван Иванович"})
-  @Column({type: DataType.STRING, allowNull: false})
+  @ApiProperty({default: "Иванов Иван Иванович", required: false})
+  @Column({type: DataType.STRING})
   name: string;
 
   @ApiProperty({default: "1234567890"})

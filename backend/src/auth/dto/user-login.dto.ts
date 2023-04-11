@@ -1,12 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {IsEmail, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
+import {IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Length} from "class-validator";
 
 export class UserLoginDto {
   @IsString()
   @IsNotEmpty()
-  @IsEmail()
-  @ApiProperty({default: 'example@test.ru'})
-  email: string;
+  @IsPhoneNumber('RU')
+  @ApiProperty({default: '79009009090', description: 'Номер телефона в формате RU'})
+  phone: string;
 
   @IsString()
   @IsNotEmpty()
@@ -16,6 +16,6 @@ export class UserLoginDto {
 
   @IsOptional()
   @IsString()
-  @ApiProperty({default: 'cLssuU3gT5uWYJCwkK9r4l:APA...'})
+  @ApiProperty({default: 'cLssuU3gT5uWYJCwkK9r4l:APA...', required: false})
   deviceToken?: string;
 }
