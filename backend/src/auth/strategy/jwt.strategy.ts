@@ -16,10 +16,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     async validate(payload: PayloadDto): Promise<User> {
         const user = await this.usersService.getById(payload.id);
-        if (!user) throw new UnauthorizedException({
-            statusCode: 401,
-            message: 'Пользователь не авторизирован'
-        });
+        if (!user || user.deviceToken !== (payload._t ?? null))
+            throw new UnauthorizedException({
+                statusCode: 401,
+                message: 'Пользователь не авторизирован'
+            });
         return user;
     }
 }

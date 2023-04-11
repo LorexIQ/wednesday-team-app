@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { UserLoginDto } from "./dto/user-login.dto";
-import { UserCreateDto } from "../users/dto/user-create.dto";
 import { UsersService } from "../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from 'bcryptjs';
 import { User } from "../users/users.model";
+import {UserCreateDto} from "./dto/user-create.dto";
 
 @Injectable()
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
     const user = await this.usersService.getByEmail(loginDto.email);
     const passwordEquals = await bcrypt.compare(loginDto.password, user?.password ?? '');
     if (!user || !passwordEquals) throw new HttpException('Пользователь с такими данными не найден', HttpStatus.BAD_REQUEST);
-    if (loginDto?.deviceToken != user?.deviceToken) {
+    if (loginDto.deviceToken !== user.deviceToken) {
       await user.update({deviceToken: loginDto.deviceToken ?? null})
       user.deviceToken = loginDto.deviceToken;
     }
@@ -26,7 +26,12 @@ export class AuthService {
     if (error) throw new HttpException(error, HttpStatus.BAD_REQUEST);
 
     const hash = await bcrypt.hash(createDto.password, 10);
-    return this.generateToken(await this.usersService.create({ ...createDto, password: hash }));
+    const user = await this.usersService.create({
+      ...createDto,
+      password: hash,
+      deviceToken: createDto.deviceToken ?? null
+    });
+    return this.generateToken(user);
   }
 
   private generateToken(user: User): {token: string} {

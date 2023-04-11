@@ -1,11 +1,11 @@
 import {Body, Controller, Post} from "@nestjs/common";
 import {AuthService} from "./auth.service";
 import {UserLoginDto} from "./dto/user-login.dto";
-import {UserCreateDto} from "../users/dto/user-create.dto";
 import {ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {TokenDto} from "../swagger/token.dto";
 import {LoginErrorDto} from "../swagger/login-error.dto";
 import {SignupErrorDto} from "../swagger/signup-error.dto";
+import {UserCreateDto} from "./dto/user-create.dto";
 
 @ApiTags('Авторизация')
 @Controller('auth')

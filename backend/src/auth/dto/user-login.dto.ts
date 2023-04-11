@@ -17,5 +17,5 @@ export class UserLoginDto {
   @IsOptional()
   @IsString()
   @ApiProperty({default: 'cLssuU3gT5uWYJCwkK9r4l:APA...'})
-  deviceToken: string;
+  deviceToken?: string;
 }
