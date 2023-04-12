@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import it.bgitu.wednesday.databinding.ActivityMainBinding
-import it.bgitu.wednesday.fragments.FragmentCreateTravel
-import it.bgitu.wednesday.fragments.FragmentFindTravel
-import it.bgitu.wednesday.fragments.FragmentHome
-import it.bgitu.wednesday.fragments.FragmentLogIn
+import it.bgitu.wednesday.fragments.*
 import it.bgitu.wednesday.network.Const
 
 
@@ -35,8 +32,8 @@ class MainActivity : AppCompatActivity() {
                         else FragmentActionTravel.newInstance()
             binding.bottomNavigation.selectedItemId = R.id.item_2
         } else {
-            if (checkAuthorization(token ?: "")) {
-                //заполняюем данный пользователя и остаёмся на главной
+            if (checkAuthorization()) {
+                fragment = FragmentHome.newInstance()
             } else {
                 fragment = FragmentLogIn.newInstance()
                 binding.bottomNavigation.selectedItemId = R.id.item_1
@@ -87,7 +84,4 @@ class MainActivity : AppCompatActivity() {
     private fun checkCreatedTravel(): Boolean {
         return true
     }
-
-
-
 }
