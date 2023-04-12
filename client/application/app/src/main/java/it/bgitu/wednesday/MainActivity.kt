@@ -15,6 +15,10 @@ import it.bgitu.wednesday.fragments.FragmentCreateTravel
 import it.bgitu.wednesday.fragments.FragmentFindTravel
 import it.bgitu.wednesday.fragments.FragmentHome
 import it.bgitu.wednesday.fragments.FragmentLogIn
+import it.bgitu.wednesday.network.SourceProviderHolder
+import it.bgitu.wednesday.network.auth.AuthRequestBodyDto
+import it.bgitu.wednesday.network.base.RetrofitSourcesProvider
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity() {
@@ -83,7 +87,8 @@ class MainActivity : AppCompatActivity() {
         /* if (token == "be313f90")
              return true
          else return false*/
-        return true
+
+        return false
     }
 
 

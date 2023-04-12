@@ -24,4 +24,6 @@ class FragmentLogIn : Fragment() {
         binding = FragmentLoginBinding.inflate(layoutInflater)
         return binding.root
     }
+
+
 }
