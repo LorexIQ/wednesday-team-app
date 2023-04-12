@@ -1,6 +1,7 @@
 package it.bgitu.wednesday.network
 
 import it.bgitu.wednesday.network.auth.AuthSource
+import it.bgitu.wednesday.network.trips.TripsSource
 import it.bgitu.wednesday.network.users.UserSource
 
 interface SourcesProvider {
@@ -9,4 +10,5 @@ interface SourcesProvider {
 
     fun getUsersSource(): UserSource;
 
+    fun getTripsSource(): TripsSource;
 }

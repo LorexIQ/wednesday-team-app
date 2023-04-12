@@ -23,11 +23,14 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
 import com.google.android.material.timepicker.TimeFormat
-import it.bgitu.wednesday.network.Travel.TravelRequestBody
+import it.bgitu.wednesday.MainActivity
+import it.bgitu.wednesday.network.SourceProviderHolder
+import it.bgitu.wednesday.network.trips.TripsRequestBodyDto
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import kotlin.collections.ArrayList
 
-class FragmentFindTravel: Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener,
+class FragmentFindTravel : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener,
     GoogleMap.OnMarkerClickListener {
     private lateinit var binding: FragmentFindTravelBinding
     private lateinit var googleMap: GoogleMap
@@ -109,21 +112,34 @@ class FragmentFindTravel: Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickLi
 
         binding.layoutToInclude.buttonCreate.setOnClickListener {
 
-            if(!binding.layoutToInclude.price.text.isNullOrEmpty()
-                && dateString?.length == dateFormat.length) {
+            if (!binding.layoutToInclude.price.text.isNullOrEmpty()) {
 
-                var travelRequestBody = TravelRequestBody(
+                val travelRequestBody = TripsRequestBodyDto(
                     arrayListOfMarker.get(0).position.latitude.toString() +
-                        "|" + arrayListOfMarker.get(0).position.longitude.toString(),
+                            "|" + arrayListOfMarker.get(0).position.longitude.toString(),
                     arrayListOfMarker.get(1).position.latitude.toString() +
-                        "|" + arrayListOfMarker.get(1).position.longitude.toString(),
+                            "|" + arrayListOfMarker.get(1).position.longitude.toString(),
                     dateString!!,
                     countPlace,
                     Integer.parseInt(binding.layoutToInclude.price.text.toString())
                 )
 
-                println(travelRequestBody)
-
+                runBlocking {
+                    try {
+                        SourceProviderHolder
+                            .sourcesProvider
+                            .getTripsSource()
+                            .createTrip(travelRequestBody)
+                        activity
+                            ?.supportFragmentManager!!
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, FragmentActionTravel.newInstance())
+                            .commit()
+                        MainActivity().updateMeInfo()
+                    } catch (e: Exception) {
+                        println(e.message)
+                    }
+                }
             }
 
 
@@ -258,7 +274,7 @@ class FragmentFindTravel: Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickLi
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val selectedDate = "$day/${month + 1}/$year"
 
-            dateString = String.format("%02d.%02d.%d", day, month+1, year)
+            dateString = String.format("%d-%02d-%02d", year, month + 1, day)
             binding.layoutToInclude.date.text = dateString
         }
 
@@ -277,12 +293,9 @@ class FragmentFindTravel: Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickLi
                 .build()
 
         picker.addOnPositiveButtonClickListener {
-            val timeString = "${picker.hour}:${picker.minute}"
-            println("PIKER: " + picker.hour + ":" + picker.minute)
-            dateString += "T$timeString:00.000Z"
-
+            val timeString = String.format("%02d:%02d", picker.hour, picker.minute)
+            dateString += "T${timeString}:00.000Z"
             binding.layoutToInclude.time.text = timeString
-
         }
 
         picker.show(childFragmentManager, picker.toString())

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import it.bgitu.wednesday.MainActivity
 import it.bgitu.wednesday.databinding.FragmentActionTravelBinding
 import it.bgitu.wednesday.network.Const
 

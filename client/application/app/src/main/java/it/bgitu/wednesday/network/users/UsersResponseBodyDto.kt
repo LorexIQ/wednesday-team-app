@@ -7,7 +7,7 @@ data class UsersResponseBodyDto(
     @SerializedName("email") val email: String?,
     @SerializedName("name") val name: String?,
     @SerializedName("phone") val phone: String,
-    @SerializedName("addPassengers") val addPassengers: Int?, // null-safe type
+    @SerializedName("addPassengers") val addPassengers: Int?,
     @SerializedName("deviceToken") val deviceToken: String?,
     @SerializedName("selfTripId") val selfTripId: Int?,
     @SerializedName("tripId") val tripId: Int?,

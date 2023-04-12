@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 Const.ME?.selfTripId != null
     }
 
-    private fun updateMeInfo() {
+    fun updateMeInfo() {
         runBlocking {
             try {
                 println(Const.TOKEN)
