@@ -43,7 +43,7 @@ class FragmentActionTravel: Fragment() {
         binding.numberPlace.text = infTravel?.places.toString()
         binding.noPalace.text = infTravel?.placesIsFilled.toString()
 
-        binding.time1.text = Const.ME?.selfTrip?.date?.split("T")?.get(1) ?: "00:00"
+        binding.time.text = Const.ME?.selfTrip?.date?.split("T")?.get(1) ?: "00:00"
 
         binding.buttonCancel.setOnClickListener {
             runBlocking {
