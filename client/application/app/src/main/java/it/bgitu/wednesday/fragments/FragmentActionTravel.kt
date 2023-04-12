@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import it.bgitu.wednesday.R
 import it.bgitu.wednesday.databinding.FragmentActionTravelBinding
 import it.bgitu.wednesday.network.Const
+import it.bgitu.wednesday.network.SourceProviderHolder
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class FragmentActionTravel: Fragment() {
@@ -40,6 +43,21 @@ class FragmentActionTravel: Fragment() {
         binding.numberPlace.text = infTravel?.places.toString()
         binding.noPalace.text = infTravel?.placesIsFilled.toString()
 
+        binding.time1.text = Const.ME?.selfTrip?.date?.split("T")?.get(1) ?: "00:00"
 
+        binding.buttonCancel.setOnClickListener {
+            runBlocking {
+                try {
+                    SourceProviderHolder.sourcesProvider.getTripsSource().deleteTrip()
+                    activity
+                        ?.supportFragmentManager!!
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, FragmentFindTravel.newInstance())
+                        .commit()
+                } catch (e: Exception) {
+                    println(e)
+                }
+            }
+        }
     }
 }
