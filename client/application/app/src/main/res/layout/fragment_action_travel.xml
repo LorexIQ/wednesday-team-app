@@ -70,7 +70,7 @@
             app:layout_constraintVertical_bias="0.501">
 
             <TextView
-                android:id="@+id/price_4"
+                android:id="@+id/no_palace"
                 android:layout_width="123dp"
                 android:layout_height="31dp"
                 android:hint="3"
@@ -125,7 +125,7 @@
                 app:srcCompat="@drawable/poloska" />
 
             <TextView
-                android:id="@+id/price_3"
+                android:id="@+id/number_place"
                 android:layout_width="123dp"
                 android:layout_height="31dp"
                 android:hint="4"
@@ -167,7 +167,7 @@
                 app:layout_constraintVertical_bias="0.398" />
 
             <TextView
-                android:id="@+id/price_"
+                android:id="@+id/price"
                 android:layout_width="123dp"
                 android:layout_height="31dp"
                 android:hint="Цена"
@@ -237,7 +237,7 @@
             app:layout_constraintVertical_bias="0.078">
 
             <TextView
-                android:id="@+id/time1"
+                android:id="@+id/time"
                 android:layout_width="136dp"
                 android:layout_height="58dp"
                 android:hint="00:00"
@@ -253,8 +253,8 @@
                 app:layout_constraintVertical_bias="0.692" />
 
             <TextView
-                android:id="@+id/sity4"
-                android:layout_width="96dp"
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:hint="12.04.23"
                 android:textColor="@color/colorPink"

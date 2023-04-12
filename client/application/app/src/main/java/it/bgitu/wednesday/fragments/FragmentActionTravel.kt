@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import it.bgitu.wednesday.databinding.FragmentActionTravelBinding
 import it.bgitu.wednesday.network.Const
+import java.util.*
 
 class FragmentActionTravel: Fragment() {
     private lateinit var binding: FragmentActionTravelBinding
@@ -29,7 +30,16 @@ class FragmentActionTravel: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val infTravel = Const.ME?.selfTrip
 
-        binding.time1.text = Const.ME?.selfTrip?.date?.split("T")?.get(1) ?: "00:00"
+        binding.sity1.text = infTravel?.from
+        binding.sity2.text = infTravel?.to
+        binding.date.text = infTravel?.date?.substring(0, 7)
+        binding.time.text = infTravel?.date?.split("T")?.get(0)
+        binding.price.text = infTravel?.priceForPlace.toString()
+        binding.numberPlace.text = infTravel?.places.toString()
+        binding.noPalace.text = infTravel?.placesIsFilled.toString()
+
+
     }
 }
