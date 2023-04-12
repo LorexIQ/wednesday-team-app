@@ -6,4 +6,6 @@ interface TripsSource {
     suspend fun leaveTrip()
 
     suspend fun deleteTrip()
+
+    suspend fun getAllTrip()
 }

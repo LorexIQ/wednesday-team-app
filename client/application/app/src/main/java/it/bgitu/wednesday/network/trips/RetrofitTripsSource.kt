@@ -22,4 +22,8 @@ class RetrofitTripsSource(
     override suspend fun deleteTrip() {
         tripsAPI.deleteTrip()
     }
+
+    override suspend fun getAllTrip() {
+        tripsAPI.getAllTrip()
+    }
 }
