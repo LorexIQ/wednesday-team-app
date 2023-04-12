@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkCreatedTravel(): Boolean {
-        return false
+        return true
     }
 
 

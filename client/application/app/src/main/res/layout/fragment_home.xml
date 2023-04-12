@@ -14,8 +14,8 @@
 
         <TextView
             android:id="@+id/sity1"
-            android:layout_width="96dp"
-            android:layout_height="43dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Имя"
             android:textColor="@color/colorInput"
             android:textSize="34sp"
@@ -28,7 +28,7 @@
             app:layout_constraintVertical_bias="0.023" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="415dp"
+            android:layout_width="match_parent"
             android:layout_height="704dp"
             android:background="@drawable/bg_beige"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +52,7 @@
 
                 <TextView
                     android:id="@+id/price_3"
-                    android:layout_width="186dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:hint="89999999999"
                     android:textColor="@color/colorText"
@@ -79,13 +79,14 @@
 
                 <TextView
                     android:id="@+id/price_"
-                    android:layout_width="123dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:hint="w@mail.ru"
                     android:textAlignment="center"
                     android:textColor="@color/colorText"
                     android:textColorHint="@color/colorText"
                     android:textSize="26dp"
+                    android:layout_marginStart="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.218"
@@ -162,7 +163,7 @@
 
                 <TextView
                     android:id="@+id/age"
-                    android:layout_width="108dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     android:hint="20 лет"
                     android:textColor="@color/colorText"
@@ -196,11 +197,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Switch
+   <!-- <Switch
         android:id="@+id/switch_checked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

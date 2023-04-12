@@ -36,9 +36,9 @@ class FragmentHome : Fragment() {
 
         binding.switchChecked.isChecked = sharedPref!!.getBoolean(MODE_CACHE, false)
         if (binding.switchChecked.isChecked) {
-            binding.switchChecked.text = "Вы водитель"
+            binding.switchChecked.text = "Водитель"
         } else {
-            binding.switchChecked.text = "Вы пассажир"
+            binding.switchChecked.text = "Пассажир"
         }
 
         //Listeners
