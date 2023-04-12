@@ -44,11 +44,13 @@ class FragmentHome : Fragment() {
         //Listeners
         binding.switchChecked.setOnCheckedChangeListener { compoundButton, b ->
             if (binding.switchChecked.isChecked) {
-                binding.switchChecked.text = "Вы водитель"
+                binding.switchChecked.text = "Водитель"
             } else {
-                binding.switchChecked.text = "Вы пассажир"
+                binding.switchChecked.text = "Пассажир"
             }
             sharedPref!!.edit().putBoolean(MODE_CACHE, binding.switchChecked.isChecked).apply()
         }
     }
+
+
 }

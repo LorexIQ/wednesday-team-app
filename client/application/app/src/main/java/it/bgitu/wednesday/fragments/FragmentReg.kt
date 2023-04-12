@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import it.bgitu.wednesday.R
+import it.bgitu.wednesday.databinding.ActivityMainBinding
 import it.bgitu.wednesday.databinding.FragmentLoginBinding
 import it.bgitu.wednesday.databinding.FragmentRegisterBinding
 import it.bgitu.wednesday.network.Const
@@ -67,15 +68,38 @@ class FragmentReg : Fragment() {
         val phoneNumber = binding.numberRegister.text.toString()
         val password = binding.passRegister.text.toString()
         val passwordRepeat = binding.passRegisterRepeat.text.toString()
+
+        if (password.length < 8 || password.length > 20) {
+            ToastNotify(context, "Длина пароля должна быть больше 8 и меньше 20")
+            return
+        }
+
         if (password != passwordRepeat) {
             ToastNotify(context, "Пароли не совпадают")
             return;
         }
+
         runBlocking {
             try {
                 val token = authAPi.registration(phoneNumber, password, "123")
                 Const.TOKEN = token;
                 activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)!!.edit().putString(token, "").apply()
+                Const.TOKEN = token;
+                activity
+                    ?.getSharedPreferences("myCache", Context.MODE_PRIVATE)!!
+                    .edit()
+                    .putString(Const.TOKEN_CACHE, token)
+                    .apply()
+                ActivityMainBinding
+                    .inflate(layoutInflater)
+                    .bottomNavigation
+                    .selectedItemId = R.id.item_1
+                activity
+                    ?.supportFragmentManager!!
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, FragmentHome.newInstance())
+                    .commit()
+                ToastNotify(context, "Вы вошли")
             } catch (e: Exception)  {
                 ToastNotify(context, "Неверный логин или пароль")
             }
