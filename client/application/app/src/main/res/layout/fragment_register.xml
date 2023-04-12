@@ -7,10 +7,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/photo">
 
+    <EditText
+        android:id="@+id/numberRegister"
+        android:layout_width="325dp"
+        android:layout_height="45dp"
+        android:background="@drawable/rea_auth_input_password"
+        android:drawableLeft="@drawable/phone_input_icon"
+        android:drawablePadding="8dp"
+        android:ems="10"
+        android:hint="Номер телефона"
+        android:inputType="number"
+        android:maxLength="11"
+        android:paddingLeft="15dp"
+        android:text="8"
+        android:textColor="#99755F"
+        android:textColorHint="#F3B085"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.395" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.10"
+        android:text="Введите номер телефона и пароль"
+
+        android:textColor="#99755F"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.332" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Авторизация"
+        android:text="Регистрация "
         android:textSize="36dp"
         android:lineHeight="30.28dp"
         android:textStyle="italic"
@@ -22,11 +60,11 @@
         app:layout_constraintVertical_bias="0.233" />
 
     <TextView
-        android:id="@+id/noAccountRegister"
+        android:id="@+id/haveAccountAuth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:letterSpacing="0.05"
-        android:text="Нет аккаунта? Зарегистрируйтесь "
+        android:text="Уже есть аккаунт? Авторизируйтесь"
         android:textColor="#F6E8DB"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,63 +91,62 @@
         app:layout_constraintVertical_bias="0.043" />
 
     <Button
-        android:id="@+id/buttonAuth"
+        android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Зарегестрироваться"
         android:backgroundTint="#F6E8DB"
-        android:text="Войти"
+        android:textAllCaps="false"
         android:textColor="#EA806F"
         android:textSize="20dp"
         app:cornerRadius="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:textStyle="bold"
-        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.62" />
+        app:layout_constraintVertical_bias="0.755" />
 
     <EditText
-        android:id="@+id/phoneAuth"
+        android:id="@+id/passRegisterRepeat"
         android:layout_width="325dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:background="@drawable/rea_auth_input_password"
-        android:drawableLeft="@drawable/phone_input_icon"
+        android:drawableLeft="@drawable/pass_input_icon"
         android:drawablePadding="8dp"
         android:ems="10"
-        android:hint="Номер телефона"
-        android:inputType="number"
-        android:maxLength="11"
+        android:hint="Пароль"
+        android:inputType="textPassword"
         android:paddingLeft="15dp"
-        android:text="8"
         android:textColor="#99755F"
         android:textColorHint="#F3B085"
         android:textSize="20dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.396" />
+        app:layout_constraintVertical_bias="0.637" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:letterSpacing="0.10"
-        android:text="Введите номер телефона и пароль"
+        android:text="Подтвердите пароль"
 
         android:textColor="#99755F"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintHorizontal_bias="0.189"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.334" />
+        app:layout_constraintVertical_bias="0.561" />
 
     <EditText
-        android:id="@+id/passAuth"
+        android:id="@+id/passRegister"
         android:layout_width="325dp"
         android:layout_height="48dp"
         android:background="@drawable/rea_auth_input_password"

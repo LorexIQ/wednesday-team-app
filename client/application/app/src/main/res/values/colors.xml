@@ -7,4 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!--    Новые цвета из макета Авторизация & Регистрация-->
+    <color name="colorInputBackground">#F6E8DB</color>
+    <color name="colorInputPlaceHolder">#84B0B7</color>
+    <color name="colorInputText">#4F686C</color>
+    <color name="background">#CFE3DE</color>
+    <color name="colorLinkRegOrAuth">#EEE2D8</color>
+    <color name="colorBackground">#CFE3DE</color>
+    <color name="colorNameApp">#CFE3DE</color>
+
+    <color name="colorPink">#EA806F</color>
+    <color name="colorBeige">#FCFAF6</color>
+    <color name="colorInput">#F6E8DB</color>
+    <color name="colorHint">#F3B085</color>
+    <color name="colorText">#99755F</color>
 </resources>

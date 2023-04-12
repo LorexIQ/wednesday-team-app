@@ -12,6 +12,7 @@
     <item
         android:id="@+id/item_3"
         android:enabled="true"
+
         android:title="Новая поездка"
         android:icon="@drawable/add_circle"/>
 </menu>
