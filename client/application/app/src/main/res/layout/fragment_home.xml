@@ -178,7 +178,7 @@
 
             <Switch
                 android:id="@+id/switch_checked"
-                android:layout_width="173dp"
+                android:layout_width="wrap_content"
                 android:layout_height="54dp"
                 android:hint="Пассажир"
                 android:textColor="@color/colorPink"
