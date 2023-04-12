@@ -81,7 +81,7 @@ class FragmentReg : Fragment() {
 
         runBlocking {
             try {
-                val token = authAPi.registration(phoneNumber, password, "123")
+                val token = authAPi.registration(phoneNumber, password, Const.DEVICE_TOKEN ?: "")
                 Const.TOKEN = token;
                 activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)!!.edit().putString(token, "").apply()
                 Const.TOKEN = token;

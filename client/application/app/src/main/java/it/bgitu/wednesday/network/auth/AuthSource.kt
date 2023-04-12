@@ -7,12 +7,12 @@ interface AuthSource {
     suspend fun login(
         phone: String,
         password: String,
-        token: String
+        deviceToken: String
     ): String
 
     suspend fun registration(
         phone: String,
         password: String,
-        token: String
+        deviceToken: String
     ): String
 }
