@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import it.bgitu.wednesday.databinding.ActivityMainBinding
 import it.bgitu.wednesday.fragments.*
 import it.bgitu.wednesday.network.Const
+import it.bgitu.wednesday.network.SourceProviderHolder
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity() {
@@ -70,6 +72,15 @@ class MainActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit()
+            runBlocking {
+                println("CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALL")
+                try {
+                    val test = SourceProviderHolder.sourcesProvider.getUsersSource().getMe()
+                    println(test.phone)
+                } catch (e: Exception) {
+                    println(e.message)
+                }
+            }
             resultFlag
         }
 
