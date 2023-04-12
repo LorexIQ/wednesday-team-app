@@ -5,7 +5,9 @@ interface TripsSource {
 
     suspend fun leaveTrip()
 
+    suspend fun joinTrip(id: String, tripBody: TripsJoinRequestBodyDto?): TripsResponseBodyDto
+
     suspend fun deleteTrip()
 
-    suspend fun getAllTrip()
+    suspend fun getAllTrip(): ArrayList<TripsResponseBodyDto>
 }

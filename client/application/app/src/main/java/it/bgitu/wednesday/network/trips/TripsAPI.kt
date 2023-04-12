@@ -5,6 +5,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface TripsAPI {
     @POST("trips")
@@ -13,9 +14,12 @@ interface TripsAPI {
     @PATCH("trips/leave")
     suspend fun leaveTrip()
 
+    @PATCH("trips/join/{id}")
+    suspend fun joinTrip(@Path("id") id: String, @Body tripBody: TripsJoinRequestBodyDto?): TripsResponseBodyDto
+
     @DELETE("trips/me")
     suspend fun deleteTrip()
 
     @GET("trips/all")
-    suspend fun getAllTrip()
+    suspend fun getAllTrip(): ArrayList<TripsResponseBodyDto>
 }

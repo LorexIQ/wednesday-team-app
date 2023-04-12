@@ -9,11 +9,11 @@ interface ReqTripsAPI {
     suspend fun createReqTrip(@Body tripBody: ReqTripsRequestBodyDto): TripsResponseBodyDto
 
     @PATCH("request-trips/accept/{id}")
-    suspend fun acceptReqTrip(@Path("id") id: String)
+    suspend fun acceptReqTrip(@Path("id") id: String): TripsResponseBodyDto
 
     @DELETE("request-trips/me")
     suspend fun deleteReqTrip()
 
     @GET("request-trips/all")
-    suspend fun getAllReqTrip()
+    suspend fun getAllReqTrip(): ArrayList<TripsResponseBodyDto>
 }

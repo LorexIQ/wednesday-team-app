@@ -15,15 +15,21 @@ class RetrofitTripsSource(
         tripsAPI.createTrip(tripBody)
     }
 
-    override suspend fun leaveTrip() {
+    override suspend fun leaveTrip() = wrapRetrofitExceptions {
         tripsAPI.leaveTrip()
     }
 
-    override suspend fun deleteTrip() {
+    override suspend fun joinTrip(
+        id: String, tripBody: TripsJoinRequestBodyDto?
+    ): TripsResponseBodyDto = wrapRetrofitExceptions {
+        tripsAPI.joinTrip(id, tripBody)
+    }
+
+    override suspend fun deleteTrip() = wrapRetrofitExceptions {
         tripsAPI.deleteTrip()
     }
 
-    override suspend fun getAllTrip() {
+    override suspend fun getAllTrip(): ArrayList<TripsResponseBodyDto> = wrapRetrofitExceptions {
         tripsAPI.getAllTrip()
     }
 }

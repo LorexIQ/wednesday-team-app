@@ -9,3 +9,7 @@ data class TripsRequestBodyDto(
     @SerializedName("places") val places: Int,
     @SerializedName("priceForPlace") val priceForPlace: Int
 )
+
+data class TripsJoinRequestBodyDto(
+    @SerializedName("addPassengers") val addPassengers: Int?
+)

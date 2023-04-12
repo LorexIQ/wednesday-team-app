@@ -16,15 +16,15 @@ class RetrofitReqTripsSource(
         reqTripsAPI.createReqTrip(tripBody)
     }
 
-    override suspend fun acceptReqTrip(id: String) {
+    override suspend fun acceptReqTrip(id: String): TripsResponseBodyDto = wrapRetrofitExceptions{
         reqTripsAPI.acceptReqTrip(id)
     }
 
-    override suspend fun deleteReqTrip() {
+    override suspend fun deleteReqTrip() = wrapRetrofitExceptions {
         reqTripsAPI.deleteReqTrip()
     }
 
-    override suspend fun getAllReqTrip() {
+    override suspend fun getAllReqTrip(): ArrayList<TripsResponseBodyDto> = wrapRetrofitExceptions{
         reqTripsAPI.getAllReqTrip()
     }
 }
