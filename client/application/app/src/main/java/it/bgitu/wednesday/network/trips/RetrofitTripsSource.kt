@@ -14,4 +14,12 @@ class RetrofitTripsSource(
     ): TripsResponseBodyDto = wrapRetrofitExceptions {
         tripsAPI.createTrip(tripBody)
     }
+
+    override suspend fun leaveTrip() {
+        tripsAPI.leaveTrip()
+    }
+
+    override suspend fun deleteTrip() {
+        tripsAPI.deleteTrip()
+    }
 }
