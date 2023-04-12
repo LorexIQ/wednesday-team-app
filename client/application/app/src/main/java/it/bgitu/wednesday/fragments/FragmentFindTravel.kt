@@ -57,7 +57,7 @@ class FragmentFindTravel: Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //setLocation()
+        setLocation()
 
         binding.title.text = "Ввод точки: start"
 
