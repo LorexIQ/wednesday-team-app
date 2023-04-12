@@ -10,6 +10,7 @@ import it.bgitu.wednesday.databinding.FragmentActionTravelBinding
 class FragmentActionTravel: Fragment() {
     private lateinit var binding: FragmentActionTravelBinding
 
+
     companion object {
         fun newInstance(): FragmentActionTravel {
             return FragmentActionTravel()
@@ -23,5 +24,10 @@ class FragmentActionTravel: Fragment() {
     ): View? {
         binding = FragmentActionTravelBinding.inflate(layoutInflater)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 }

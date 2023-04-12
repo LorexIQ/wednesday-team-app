@@ -288,13 +288,5 @@ class FragmentFindTravel: Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickLi
         picker.show(childFragmentManager, picker.toString())
     }
 
-    private fun getMarkerByTag(tag: String): Marker? {
-        for (item in arrayListOfMarker) {
-            if (item.tag == tag) {
-                return item
-            }
-        }
-        return null
-    }
 }
 
