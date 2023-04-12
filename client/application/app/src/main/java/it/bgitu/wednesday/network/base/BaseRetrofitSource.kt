@@ -14,13 +14,6 @@ open class BaseRetrofitSource (
     private val moshi: Moshi = retrofitConfig.moshi
     private val errorAdapter = moshi.adapter(ErrorResponseBody::class.java)
 
-    /**
-     * Map network and parse exceptions into in-app exceptions.
-     * @throws BackendException
-     * @throws ParseBackendResponseException
-     * @throws ConnectionException
-     */
-
     suspend fun <T> wrapRetrofitExceptions(block: suspend () -> T): T {
         return try {
             block()
@@ -45,13 +38,14 @@ open class BaseRetrofitSource (
             val errorBody: ErrorResponseBody = errorAdapter.fromJson(
                 e.response()!!.errorBody()!!.string()
             )!!
-            BackendException(e.code(), errorBody.error)
+            BackendException(e.code(), errorBody.message)
         } catch (e: Exception) {
             throw ParseBackendResponseException(e)
         }
     }
 
     class ErrorResponseBody(
-        val error: String
+        val statusCode: Int,
+        val message: String
     )
 }

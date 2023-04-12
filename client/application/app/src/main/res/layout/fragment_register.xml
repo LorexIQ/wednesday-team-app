@@ -19,7 +19,7 @@
         android:inputType="number"
         android:maxLength="11"
         android:paddingLeft="15dp"
-        android:text="8"
+        android:text="7"
         android:textColor="#99755F"
         android:textColorHint="#F3B085"
         android:textSize="20dp"

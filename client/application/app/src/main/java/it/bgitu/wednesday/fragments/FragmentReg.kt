@@ -12,21 +12,21 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import it.bgitu.wednesday.R
-import it.bgitu.wednesday.databinding.ActivityMainBinding
 import it.bgitu.wednesday.databinding.FragmentLoginBinding
+import it.bgitu.wednesday.databinding.FragmentRegisterBinding
 import it.bgitu.wednesday.network.Const
 import it.bgitu.wednesday.network.SourceProviderHolder
 import it.bgitu.wednesday.network.auth.AuthSource
 import it.bgitu.wednesday.utils.ToastNotify
 import kotlinx.coroutines.runBlocking
 
-class FragmentLogIn : Fragment() {
-    private lateinit var binding: FragmentLoginBinding
+class FragmentReg : Fragment() {
+    private lateinit var binding: FragmentRegisterBinding
     private lateinit var authAPi: AuthSource;
 
     companion object {
-        fun newInstance(): FragmentLogIn {
-            return FragmentLogIn()
+        fun newInstance(): FragmentReg {
+            return FragmentReg()
         }
     }
 
@@ -35,7 +35,7 @@ class FragmentLogIn : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLoginBinding.inflate(layoutInflater)
+        binding = FragmentRegisterBinding.inflate(layoutInflater)
         authAPi = SourceProviderHolder.sourcesProvider.getAuthSource()
         return binding.root
     }
@@ -43,10 +43,10 @@ class FragmentLogIn : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonAuth.setOnClickListener { signIn() }
-        binding.noAccountRegister.setOnClickListener { redirectToReg() }
+        binding.registerButton.setOnClickListener { signUp() }
+        binding.haveAccountAuth.setOnClickListener { redirectToLogin() }
 
-        val phoneET: EditText = binding.phoneAuth
+        val phoneET: EditText = binding.numberRegister
         phoneET.addTextChangedListener(object: TextWatcher {
             lateinit var oldText: String;
 
@@ -63,37 +63,19 @@ class FragmentLogIn : Fragment() {
         })
     }
 
-    private fun signIn() {
-        val phoneNumber = binding.phoneAuth.text.toString()
-        val password = binding.passAuth.text.toString()
-        if (phoneNumber.length != 11) {
-            ToastNotify(context, "Введите корректный номер телефона")
-            return
-        }
-        println(password.length)
-        if (password.length < 8 || password.length > 20) {
-            ToastNotify(context, "Длина пароля должна быть больше 8 и меньше 20")
-            return
+    private fun signUp() {
+        val phoneNumber = binding.numberRegister.text.toString()
+        val password = binding.passRegister.text.toString()
+        val passwordRepeat = binding.passRegisterRepeat.text.toString()
+        if (password != passwordRepeat) {
+            ToastNotify(context, "Пароли не совпадают")
+            return;
         }
         runBlocking {
             try {
-                val token = authAPi.login(phoneNumber, password, "123")
+                val token = authAPi.registration(phoneNumber, password, "123")
                 Const.TOKEN = token;
-                activity
-                    ?.getSharedPreferences("myCache", Context.MODE_PRIVATE)!!
-                    .edit()
-                    .putString(Const.TOKEN_CACHE, token)
-                    .apply()
-                ActivityMainBinding
-                    .inflate(layoutInflater)
-                    .bottomNavigation
-                    .selectedItemId = R.id.item_1
-                activity
-                    ?.supportFragmentManager!!
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, FragmentHome.newInstance())
-                    .commit()
-                ToastNotify(context, "Вы вошли")
+                activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)!!.edit().putString(token, "").apply()
             } catch (e: Exception)  {
                 ToastNotify(context, "Неверный логин или пароль")
             }
@@ -101,8 +83,8 @@ class FragmentLogIn : Fragment() {
     }
 
     @SuppressLint("CommitTransaction", "ResourceType")
-    private fun redirectToReg() {
-        val fragment = FragmentReg.newInstance()
+    private fun redirectToLogin() {
+        val fragment = FragmentLogIn.newInstance()
         activity?.supportFragmentManager!!.beginTransaction().replace(R.id.fragment_container, fragment).commit()
     }
 }

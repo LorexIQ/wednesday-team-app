@@ -5,29 +5,28 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import it.bgitu.wednesday.databinding.ActivityMainBinding
-import it.bgitu.wednesday.fragments.*
+import it.bgitu.wednesday.fragments.FragmentCreateTravel
+import it.bgitu.wednesday.fragments.FragmentFindTravel
+import it.bgitu.wednesday.fragments.FragmentHome
+import it.bgitu.wednesday.fragments.FragmentLogIn
+import it.bgitu.wednesday.network.Const
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
 
-    private lateinit var sharedPref: SharedPreferences
     private var token: String? = null
+    private lateinit var sharedPref: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         sharedPref = getSharedPreferences("myCache", Context.MODE_PRIVATE)
+        token = sharedPref.getString(Const.TOKEN_CACHE, null)
 
-        token = sharedPref.getString(TOKEN_CACHE, null)
+
 
         var fragment = Fragment()
         //проверка токена авторизации
@@ -54,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
             when(item.itemId) {
                 R.id.item_1 -> {
-                    fragment = if (checkAuthorization(token ?: ""))
+                    fragment = if (checkAuthorization())
                         FragmentHome.newInstance() else FragmentLogIn.newInstance()
                     resultFlag = true
                 }
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                     resultFlag = true
                 }
                 R.id.item_3 -> {
-                    fragment = if (checkAuthorization(token ?: ""))
+                    fragment = if (checkAuthorization())
                         FragmentCreateTravel.newInstance() else FragmentLogIn.newInstance()
                     resultFlag = true
                 }
@@ -79,11 +78,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun checkAuthorization(token: String): Boolean {
-        /* if (token == "be313f90")
-             return true
-         else return false*/
-        return true
+    private fun checkAuthorization(): Boolean {
+        token = sharedPref.getString(Const.TOKEN_CACHE, null)
+        println("############################${token}#############################")
+        return !token.isNullOrEmpty()
     }
 
     private fun checkCreatedTravel(): Boolean {
