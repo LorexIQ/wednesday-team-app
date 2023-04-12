@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import it.bgitu.wednesday.databinding.FragmentActionTravelBinding
+import it.bgitu.wednesday.network.Const
 
 class FragmentActionTravel: Fragment() {
     private lateinit var binding: FragmentActionTravelBinding
@@ -29,5 +30,6 @@ class FragmentActionTravel: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.time1.text = Const.ME?.selfTrip?.date?.split("T")?.get(1) ?: "00:00"
     }
 }

@@ -21,10 +21,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updateMeInfo()
 
         sharedPref = getSharedPreferences("myCache", Context.MODE_PRIVATE)
         token = sharedPref.getString(Const.TOKEN_CACHE, null)
-
+        Const.TOKEN = token.toString()
 
 
         var fragment = Fragment()
@@ -50,6 +51,8 @@ class MainActivity : AppCompatActivity() {
             var resultFlag = false
             fragment = FragmentLogIn.newInstance()
 
+            updateMeInfo()
+
             when(item.itemId) {
                 R.id.item_1 -> {
                     fragment = if (checkAuthorization())
@@ -72,27 +75,30 @@ class MainActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit()
-            runBlocking {
-                println("CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALL")
-                try {
-                    val test = SourceProviderHolder.sourcesProvider.getUsersSource().getMe()
-                    println(test.phone)
-                } catch (e: Exception) {
-                    println(e.message)
-                }
-            }
             resultFlag
         }
-
     }
 
     private fun checkAuthorization(): Boolean {
         token = sharedPref.getString(Const.TOKEN_CACHE, null)
-        println("############################${token}#############################")
         return !token.isNullOrEmpty()
     }
 
     private fun checkCreatedTravel(): Boolean {
-        return true
+        println(Const.ME)
+        return Const.ME?.tripId != null ||
+                Const.ME?.selfTripId != null
+    }
+
+    private fun updateMeInfo() {
+        runBlocking {
+            try {
+                println(Const.TOKEN)
+                Const.ME = SourceProviderHolder.sourcesProvider.getUsersSource().getMe()
+                println("*********************${Const.ME}************************")
+            } catch (e: Exception) {
+                println(e.message)
+            }
+        }
     }
 }
