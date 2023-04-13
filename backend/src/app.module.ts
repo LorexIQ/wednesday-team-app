@@ -33,7 +33,7 @@ import { NotifyModule } from './notify/notify.module';
             database: process.env.POSTGRES_DB,
             models: [User, Trip, Car, RequestTrip],
             autoLoadModels: true,
-            logging: false
+            //logging: false
         }),
         UsersModule,
         AuthModule,

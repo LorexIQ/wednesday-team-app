@@ -36,6 +36,11 @@ export class AuthService {
         return this.generateToken(user);
     }
 
+    async logout(user: User): Promise<void> {
+        await user.update({deviceToken: null});
+        return;
+    }
+
     private generateToken(user: User): { token: string } {
         const payload = {
             id: user.id,
