@@ -15,4 +15,6 @@ interface AuthSource {
         password: String,
         deviceToken: String
     ): String
+
+    suspend fun logout()
 }

@@ -12,4 +12,7 @@ interface AuthAPI {
     @GET("auth/signup")
     suspend fun registration(@Body authRequestBodyDto: AuthRequestBodyDto): AuthResponseBodyDto
 
+    @GET("auth/logout")
+    suspend fun logout()
+
 }

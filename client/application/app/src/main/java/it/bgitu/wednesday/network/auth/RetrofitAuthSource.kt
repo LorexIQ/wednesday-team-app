@@ -35,4 +35,8 @@ class RetrofitAuthSource(
             deviceToken)
         authAPI.registration(authRequestBody).token
     }
+
+    override suspend fun logout() = wrapRetrofitExceptions {
+        authAPI.logout()
+    }
 }

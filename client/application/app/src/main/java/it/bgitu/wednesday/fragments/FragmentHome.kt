@@ -34,8 +34,6 @@ class FragmentHome : Fragment() {
 
         val sharedPref  = activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)
 
-        binding.
-
         binding.switchChecked.isChecked = sharedPref!!.getBoolean(MODE_CACHE, false)
         if (binding.switchChecked.isChecked) {
             binding.switchChecked.text = "Водитель"
