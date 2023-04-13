@@ -56,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:maxLength="14"
+            android:autoSizeTextType="uniform"
             android:textColor="#EA806F"
             android:textSize="24dp"
             android:textStyle="bold"
@@ -79,6 +80,7 @@
             tools:text="~1.43 км" />
 
         <TextView
+            android:autoSizeTextType="uniform"
             android:id="@+id/end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

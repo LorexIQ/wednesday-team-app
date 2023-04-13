@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import it.bgitu.wednesday.MODE_CACHE
 import it.bgitu.wednesday.databinding.FragmentHomeBinding
+import it.bgitu.wednesday.network.Const
 
 class FragmentHome : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -31,8 +32,9 @@ class FragmentHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val sharedPref  = activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)
+
+        binding.
 
         binding.switchChecked.isChecked = sharedPref!!.getBoolean(MODE_CACHE, false)
         if (binding.switchChecked.isChecked) {
@@ -49,6 +51,12 @@ class FragmentHome : Fragment() {
                 binding.switchChecked.text = "Пассажир"
             }
             sharedPref!!.edit().putBoolean(MODE_CACHE, binding.switchChecked.isChecked).apply()
+        }
+
+        binding.logout.setOnClickListener {
+            Const.TOKEN = ""
+            Const.ME = null
+            sharedPref!!.edit().putString(Const.TOKEN_CACHE, "").apply()
         }
     }
 

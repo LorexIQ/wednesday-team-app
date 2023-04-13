@@ -35,15 +35,14 @@ class FragmentActionTravel: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val infTravel = Const.ME?.selfTrip
 
-        binding.sity1.text = infTravel?.from
-        binding.sity2.text = infTravel?.to
-        binding.date.text = infTravel?.date?.substring(0, 7)
-        binding.time.text = infTravel?.date?.split("T")?.get(0)
+        binding.sity1.text = infTravel?.fromName?.split(",")?.get(0)
+        binding.sity2.text = infTravel?.toName?.split(",")?.get(0)
+        binding.date.text = infTravel?.date?.substring(0, 10)
+        binding.time.text = infTravel?.date?.split("T")?.get(1)
         binding.price.text = infTravel?.priceForPlace.toString()
         binding.numberPlace.text = infTravel?.places.toString()
         binding.noPalace.text = infTravel?.placesIsFilled.toString()
 
-        binding.time.text = Const.ME?.selfTrip?.date?.split("T")?.get(1) ?: "00:00"
 
         binding.buttonCancel.setOnClickListener {
             runBlocking {

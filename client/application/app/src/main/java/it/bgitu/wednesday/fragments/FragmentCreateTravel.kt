@@ -13,6 +13,8 @@ import it.bgitu.wednesday.MODE_CACHE
 import it.bgitu.wednesday.myrecycle.ActionListener
 import it.bgitu.wednesday.myrecycle.ItemTravel
 import it.bgitu.wednesday.myrecycle.TravelsAdapter
+import it.bgitu.wednesday.network.SourceProviderHolder
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
@@ -66,7 +68,22 @@ class FragmentCreateTravel: Fragment() {
                 ItemTravel("ыаа", "Брянск", "Москва",
                     "1.3", "0.50", "20:20", "20-12-50", "1200"),
                 ItemTravel("ывааав", "Москва", "Брянск",
+                    "1.3", "0.50", "20:20", "20-12-50", "50"),ItemTravel("ыаа", "Брянск", "Москва",
+                    "1.3", "0.50", "20:20", "20-12-50", "1200"),
+                ItemTravel("ывааав", "Москва", "Брянск",
+                    "1.3", "0.50", "20:20", "20-12-50", "50"),ItemTravel("ыаа", "Брянск", "Москва",
+                    "1.3", "0.50", "20:20", "20-12-50", "1200"),
+                ItemTravel("ывааав", "Москва", "Брянск",
                     "1.3", "0.50", "20:20", "20-12-50", "50"))
+        }
+
+        runBlocking {
+            try {
+                val a = SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()
+                println(a)
+            }catch (e: Exception) {
+                println("Ошибка " + e)
+            }
         }
 
         adapter.travels = travels
