@@ -16,7 +16,7 @@ interface TripsAPI {
     suspend fun leaveTrip()
 
     @PATCH("trips/join/{id}")
-    suspend fun joinTrip(@Path("id") id: String, @Body tripBody: TripsJoinRequestBodyDto?): TripsResponseBodyDto
+    suspend fun joinTrip(@Path("id") id: String)
 
     @DELETE("trips/me")
     suspend fun deleteTrip()

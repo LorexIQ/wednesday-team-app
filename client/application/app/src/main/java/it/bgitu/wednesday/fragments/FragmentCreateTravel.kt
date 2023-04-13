@@ -8,13 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import  it.bgitu.wednesday.databinding.FragmentCreateTravelBinding
-import com.google.android.material.datepicker.MaterialDatePicker
 import it.bgitu.wednesday.MODE_CACHE
 import it.bgitu.wednesday.myrecycle.ActionListener
 import it.bgitu.wednesday.myrecycle.ItemTravel
 import it.bgitu.wednesday.myrecycle.TravelsAdapter
 import it.bgitu.wednesday.network.SourceProviderHolder
-import it.bgitu.wednesday.network.trips.ListTripsResponseBodyDto
+import it.bgitu.wednesday.network.reqTrips.ReqTripsResponseBodyDto
+import it.bgitu.wednesday.network.trips.TripsJoinRequestBodyDto
+import it.bgitu.wednesday.network.trips.TripsResponseBodyDto
+import it.bgitu.wednesday.utils.ToastNotify
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -42,14 +44,25 @@ class FragmentCreateTravel: Fragment() {
 
         val sharedPref  = activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)
         val flagMode = sharedPref!!.getBoolean(MODE_CACHE, false)
-        var allTrips: ListTripsResponseBodyDto = ListTripsResponseBodyDto()
 
         var travels: ArrayList<ItemTravel> = arrayListOf()
 
         adapter = TravelsAdapter(object: ActionListener {
             override fun select(itemTravel: ItemTravel) {
-                // отпрвляется в базу
-                adapter.travels.remove(itemTravel)
+                runBlocking {
+                    try {
+                        if (flagMode) {
+                            SourceProviderHolder.sourcesProvider.getReqTripsSource().acceptReqTrip(itemTravel.id.toString())
+                            adapter.travels.remove(itemTravel)
+                        } else {
+                            SourceProviderHolder.sourcesProvider.getTripsSource().joinTrip(itemTravel.id.toString())
+                            adapter.travels.remove(itemTravel)
+                        }
+                    }catch (e: Exception) {
+                        ToastNotify(context, e.message ?: "Ошибка добавления")
+                    }
+                }
+
                 adapter.notifyDataSetChanged()
             }
         })
@@ -57,31 +70,68 @@ class FragmentCreateTravel: Fragment() {
         binding.listItem.layoutManager = LinearLayoutManager(context)
 
 
-        /*if (flagMode) {
+        if (flagMode) {
             runBlocking {
                 try {
-                    allTrips = SourceProviderHolder.sourcesProvider.getReqTripsSource().getAllReqTrip()
+                    for (el in SourceProviderHolder.sourcesProvider.getReqTripsSource().getAllReqTrip()) {
+                        travels.add(ReqTripsSourceToItemTravel(el))
+                    }
                 } catch (e: Exception) {
                     println("Ошибка " + e)
                 }
             }
 
         } else {
-            //запрос запросов на предку
-        }*/
-
-
-       /* runBlocking {
-            try {
-                allTrips = SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()
-                println(allTrips)
-            }catch (e: Exception) {
-                println("Ошибка " + e)
+            runBlocking {
+                try {
+                    for (el in SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()) {
+                        travels.add(TripsResponseBodyDtoToItemTravel(el))
+                    }
+                }catch (e: Exception) {
+                    println("Ошибка " + e)
+                }
             }
-        }*/
+        }
+
 
         adapter.travels = travels
 
+
+    }
+
+    private fun TripsResponseBodyDtoToItemTravel(el: TripsResponseBodyDto):ItemTravel {
+        with (el) {
+            val itemTravel: ItemTravel = ItemTravel(
+                el.id,
+                el.driver.name ?: el.driver.phone,
+                el.fromName ?: " ",
+                el.toName ?: "",
+                "${(0..5).random()}." + "${(0..9).random()}",
+                "${(0..5).random()}." + "${(0..9).random()}",
+                el.date?.split("T")?.get(1)?.substring(0, 5) ?: "",
+                el.date?.substring(0, 10) ?: " ",
+                    el.priceForPlace.toString()
+            )
+            return itemTravel
+        }
+
+    }
+
+    private fun ReqTripsSourceToItemTravel(el: ReqTripsResponseBodyDto):ItemTravel {
+        with (el) {
+            val itemTravel: ItemTravel = ItemTravel(
+                el.id,
+                el.owner.name ?: el.owner.phone,
+                el.fromName ?: " ",
+                el.toName ?: "",
+                "${(0..5).random()}." + "${(0..9).random()}",
+                "${(0..5).random()}." + "${(0..9).random()}",
+                el.date?.split("T")?.get(1)?.substring(0, 5) ?: "",
+                el.date?.substring(0, 10) ?: " ",
+                el.priceForPlace.toString()
+            )
+            return itemTravel
+        }
 
     }
 

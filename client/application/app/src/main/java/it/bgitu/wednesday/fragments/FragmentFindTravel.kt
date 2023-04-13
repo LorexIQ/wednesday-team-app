@@ -142,12 +142,14 @@ class FragmentFindTravel : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickL
                         SourceProviderHolder
                             .sourcesProvider
                             .getReqTripsSource()
-                            .createReqTrip(ReqTripsRequestBodyDto(
+                            .createReqTrip(
+                                ReqTripsRequestBodyDto(
                                 from, to,
                                 dateString!!,
                                 countPlace,
                                 Integer.parseInt(binding.layoutToInclude.price.text.toString())
-                            ))
+                            )
+                            )
                     } else {
                         SourceProviderHolder
                             .sourcesProvider

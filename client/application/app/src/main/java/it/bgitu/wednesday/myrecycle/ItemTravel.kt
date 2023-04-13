@@ -1,6 +1,7 @@
 package it.bgitu.wednesday.myrecycle
 
 data class ItemTravel(
+    val id: Int,
     val name: String,
     val startCity: String,
     val endCity: String,

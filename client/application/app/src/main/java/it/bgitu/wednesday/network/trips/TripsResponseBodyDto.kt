@@ -14,6 +14,22 @@ data class TripsResponseBodyDto(
     @SerializedName("placesIsFilled") val placesIsFilled: Int,
     @SerializedName("complected") val complected: Boolean,
     @SerializedName("driverId") val driverId: Int,
+    @SerializedName("driver") val driver: Driver,
     @SerializedName("createdAt") val createdAt: String,
     @SerializedName("updatedAt") val updatedAt: String
-)
+) {
+    data class Driver(
+        @SerializedName("id") val id: Int,
+        @SerializedName("email") val email: String?,
+        @SerializedName("name") val name: String?,
+        @SerializedName("phone") val phone: String,
+        @SerializedName("addPassengers") val addPassengers: Int?,
+        @SerializedName("deviceToken") val deviceToken: String?,
+        @SerializedName("selfTripId") val selfTripId: Int?,
+        @SerializedName("tripId") val tripId: Int?,
+        @SerializedName("carId") val carId: Int?,
+        @SerializedName("requestTripId") val requestTripId: Int?,
+        @SerializedName("createdAt") val createdAt: String,
+        @SerializedName("updatedAt") val updatedAt: String
+    )
+}

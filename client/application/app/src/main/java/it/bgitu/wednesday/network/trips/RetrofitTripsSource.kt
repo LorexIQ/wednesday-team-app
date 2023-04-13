@@ -20,9 +20,9 @@ class RetrofitTripsSource(
     }
 
     override suspend fun joinTrip(
-        id: String, tripBody: TripsJoinRequestBodyDto?
-    ): TripsResponseBodyDto = wrapRetrofitExceptions {
-        tripsAPI.joinTrip(id, tripBody)
+        id: String
+    ) = wrapRetrofitExceptions {
+        tripsAPI.joinTrip(id)
     }
 
     override suspend fun deleteTrip() = wrapRetrofitExceptions {
