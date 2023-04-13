@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import it.bgitu.wednesday.MODE_CACHE
+import it.bgitu.wednesday.R
 import it.bgitu.wednesday.databinding.FragmentHomeBinding
 import it.bgitu.wednesday.network.Const
+import it.bgitu.wednesday.network.SourceProviderHolder
+import kotlinx.coroutines.runBlocking
 
 class FragmentHome : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -60,6 +63,20 @@ class FragmentHome : Fragment() {
             Const.TOKEN = ""
             Const.ME = null
             sharedPref!!.edit().putString(Const.TOKEN_CACHE, "").apply()
+
+            runBlocking {
+                try {
+                    SourceProviderHolder.sourcesProvider.getAuthSource().logout()
+                } catch (e: Exception) {
+                    println("ТТТТТТТТТ")
+                }
+            }
+            activity
+                ?.supportFragmentManager!!
+                .beginTransaction()
+                .replace(R.id.fragment_container, FragmentLogIn.newInstance())
+                .commit()
+
         }
     }
 

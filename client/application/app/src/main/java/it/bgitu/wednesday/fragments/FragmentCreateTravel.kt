@@ -14,6 +14,7 @@ import it.bgitu.wednesday.myrecycle.ActionListener
 import it.bgitu.wednesday.myrecycle.ItemTravel
 import it.bgitu.wednesday.myrecycle.TravelsAdapter
 import it.bgitu.wednesday.network.SourceProviderHolder
+import it.bgitu.wednesday.network.trips.ListTripsResponseBodyDto
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -41,6 +42,7 @@ class FragmentCreateTravel: Fragment() {
 
         val sharedPref  = activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)
         val flagMode = sharedPref!!.getBoolean(MODE_CACHE, false)
+        var allTrips: ListTripsResponseBodyDto = ListTripsResponseBodyDto()
 
         var travels: ArrayList<ItemTravel> = arrayListOf()
 
@@ -56,31 +58,23 @@ class FragmentCreateTravel: Fragment() {
 
 
         if (flagMode) {
-            //запрос поездок
-            travels =  arrayListOf(
-                ItemTravel("Влад", "Брянск", "Москва",
-                "1.3", "0.50", "20:20", "20-12-50", "200"),
-                ItemTravel("Дима", "Москва", "Брянск",
-                    "1.3", "0.50", "20:20", "20-12-50", "454"))
+            runBlocking {
+                try {
+                    allTrips = SourceProviderHolder.sourcesProvider.getReqTripsSource().getAllReqTrip()
+                } catch (e: Exception) {
+                    println("Ошибка " + e)
+                }
+            }
+
         } else {
             //запрос запросов на предку
-            travels =  arrayListOf(
-                ItemTravel("ыаа", "Брянск", "Москва",
-                    "1.3", "0.50", "20:20", "20-12-50", "1200"),
-                ItemTravel("ывааав", "Москва", "Брянск",
-                    "1.3", "0.50", "20:20", "20-12-50", "50"),ItemTravel("ыаа", "Брянск", "Москва",
-                    "1.3", "0.50", "20:20", "20-12-50", "1200"),
-                ItemTravel("ывааав", "Москва", "Брянск",
-                    "1.3", "0.50", "20:20", "20-12-50", "50"),ItemTravel("ыаа", "Брянск", "Москва",
-                    "1.3", "0.50", "20:20", "20-12-50", "1200"),
-                ItemTravel("ывааав", "Москва", "Брянск",
-                    "1.3", "0.50", "20:20", "20-12-50", "50"))
         }
+
 
         runBlocking {
             try {
-                val a = SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()
-                println(a)
+                allTrips = SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()
+                println(allTrips)
             }catch (e: Exception) {
                 println("Ошибка " + e)
             }
