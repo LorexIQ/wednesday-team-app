@@ -2,6 +2,7 @@ package it.bgitu.wednesday.network.reqTrips
 
 import it.bgitu.wednesday.network.base.BaseRetrofitSource
 import it.bgitu.wednesday.network.base.RetrofitConfig
+import it.bgitu.wednesday.network.trips.ListTripsResponseBodyDto
 import it.bgitu.wednesday.network.trips.TripsResponseBodyDto
 import retrofit2.http.Path
 
@@ -24,7 +25,7 @@ class RetrofitReqTripsSource(
         reqTripsAPI.deleteReqTrip()
     }
 
-    override suspend fun getAllReqTrip(): ArrayList<TripsResponseBodyDto> = wrapRetrofitExceptions{
+    override suspend fun getAllReqTrip(): ListTripsResponseBodyDto = wrapRetrofitExceptions{
         reqTripsAPI.getAllReqTrip()
     }
 }

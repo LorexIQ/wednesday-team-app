@@ -20,6 +20,6 @@ interface TripsAPI {
     @DELETE("trips/me")
     suspend fun deleteTrip()
 
-    @GET("trips/all")
-    suspend fun getAllTrip(): ArrayList<TripsResponseBodyDto>
+    @GET("trips")
+    suspend fun getAllTrip(): ListTripsResponseBodyDto
 }
