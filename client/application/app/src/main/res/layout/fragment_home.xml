@@ -53,7 +53,7 @@
                 app:layout_constraintVertical_bias="0.225">
 
                 <TextView
-                    android:id="@+id/price_3"
+                    android:id="@+id/price3"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:hint="89999999999"
@@ -80,9 +80,9 @@
                     app:srcCompat="@drawable/phone_icon" />
 
                 <TextView
-                    android:id="@+id/price_"
+                    android:id="@+id/price"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:hint="w@mail.ru"
                     android:textAlignment="center"
                     android:textColor="@color/colorText"
@@ -202,6 +202,9 @@
                 android:layout_height="wrap_content"
                 android:text="Выйти из аккауната"
                 android:textSize="24dp"
+                android:textColor="@color/colorBeige"
+                android:textStyle="bold"
+                app:cornerRadius="50dp"
                 android:layout_marginBottom="15dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"

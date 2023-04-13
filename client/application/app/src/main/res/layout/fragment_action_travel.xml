@@ -278,8 +278,9 @@
             android:backgroundTint="@color/colorPink"
             android:text="Отменить"
             android:textAllCaps="false"
-            android:textColor="@color/colorBeige"
+
             android:textSize="24dp"
+            android:textColor="@color/colorBeige"
             android:textStyle="bold"
             app:cornerRadius="50dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -34,6 +34,11 @@ class FragmentHome : Fragment() {
 
         val sharedPref  = activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)
 
+        binding.sity1.text = Const.ME?.name ?: "Антон"
+        binding.price.text = Const.ME?.email ?: "Пусто"
+        binding.price3.text = Const.ME?.phone
+        binding.age.text = "24 лет"
+
         binding.switchChecked.isChecked = sharedPref!!.getBoolean(MODE_CACHE, false)
         if (binding.switchChecked.isChecked) {
             binding.switchChecked.text = "Водитель"
