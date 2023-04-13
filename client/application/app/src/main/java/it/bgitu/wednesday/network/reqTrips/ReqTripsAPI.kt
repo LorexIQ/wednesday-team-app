@@ -5,7 +5,7 @@ import it.bgitu.wednesday.network.trips.TripsResponseBodyDto
 import retrofit2.http.*
 
 interface ReqTripsAPI {
-    @POST("request-trips")
+    @POST("request-trips/create")
     suspend fun createReqTrip(@Body tripBody: ReqTripsRequestBodyDto): TripsResponseBodyDto
 
     @PATCH("request-trips/accept/{id}")

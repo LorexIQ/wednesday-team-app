@@ -29,7 +29,7 @@ class RetrofitTripsSource(
         tripsAPI.deleteTrip()
     }
 
-    override suspend fun getAllTrip(): ArrayList<TripsResponseBodyDto> = wrapRetrofitExceptions {
+    override suspend fun getAllTrip(): ListTripsResponseBodyDto = wrapRetrofitExceptions {
         tripsAPI.getAllTrip()
     }
 }
