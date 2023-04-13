@@ -99,7 +99,7 @@ export class TripsService {
             throw new HttpException('Пользователь имеет запрос на поездку. Отмените его, чтобы присоединиться к поездке', 401);
         else if (this.isTripComplete(trip, addPassengersDto.addPassengers))
             throw new HttpException('В машине нет мест', 402);
-        else if (this.isUserInTripPassengers(user, trip))
+        else if (user.tripId)
             throw new HttpException('Вы уже являетесь пассажиром', 403);
         else if (user.selfTripId)
             throw new HttpException('Вы являетесь водителем', 404);
