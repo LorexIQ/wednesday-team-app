@@ -21,7 +21,12 @@ data class TripsResponseBodyDto(
     @SerializedName("updatedAt") val updatedAt: String
 )
 
-class ListTripsResponseBodyDto(vararg pairs: TripsResponseBodyDto)
+class ListTripsResponseBodyDto(vararg args: TripsResponseBodyDto) {
+    val trips: ArrayList<TripsResponseBodyDto> = arrayListOf();
+    init {
+        for (trip in args) trips.add(trip)
+    }
+}
 
 @JsonClass(generateAdapter = true)
 data class Driver(

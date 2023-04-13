@@ -11,5 +11,5 @@ interface ReqTripsSource {
 
     suspend fun deleteReqTrip()
 
-    suspend fun getAllReqTrip(): ListTripsResponseBodyDto
+    suspend fun getAllReqTrip(): ArrayList<TripsResponseBodyDto>
 }

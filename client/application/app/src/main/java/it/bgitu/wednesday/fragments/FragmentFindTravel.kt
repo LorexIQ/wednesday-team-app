@@ -68,7 +68,7 @@ class FragmentFindTravel : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickL
             if (arrayListOfMarker.size == 1) {
                 googleMap.clear()
                 maxMarkersCount++
-                binding.title.text = "Ввод точки: end"
+                binding.title.text = "Ввод точки: END"
                 println(arrayListOfMarker.size)
             } else if (arrayListOfMarker.size == 2) {
                 binding.groupVisible.visibility = View.GONE
@@ -81,7 +81,7 @@ class FragmentFindTravel : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickL
             googleMap.clear()
             maxMarkersCount = 1
             arrayListOfMarker = arrayListOf()
-            binding.title.text = "Ввод точки: start"
+            binding.title.text = "Ввод точки: START"
             println(arrayListOfMarker.size)
         }
 
@@ -94,14 +94,14 @@ class FragmentFindTravel : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickL
         binding.layoutToInclude.buttonCountainer.setOnClickListener {
             if (countPlace < 4) {
                 countPlace++
-                binding.layoutToInclude.numberPlace.text = "количестко мест: $countPlace"
+                binding.layoutToInclude.numberPlace.text = "Количестко мест: $countPlace"
             }
         }
 
         binding.layoutToInclude.buttonMinus.setOnClickListener {
             if (countPlace > 1) {
                 countPlace--
-                binding.layoutToInclude.numberPlace.text = "количестко мест: $countPlace"
+                binding.layoutToInclude.numberPlace.text = "Количестко мест: $countPlace"
             }
         }
 
