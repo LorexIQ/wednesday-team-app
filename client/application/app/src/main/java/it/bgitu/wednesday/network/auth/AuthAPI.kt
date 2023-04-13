@@ -9,7 +9,7 @@ interface AuthAPI {
     @POST("auth/signin")
     suspend fun login(@Body authRequestBodyDto: AuthRequestBodyDto): AuthResponseBodyDto
 
-    @GET("auth/signup")
+    @POST("auth/signup")
     suspend fun registration(@Body authRequestBodyDto: AuthRequestBodyDto): AuthResponseBodyDto
 
     @GET("auth/logout")

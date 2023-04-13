@@ -81,7 +81,7 @@ class FragmentReg : Fragment() {
 
         runBlocking {
             try {
-                val token = authAPi.registration(phoneNumber, password, Const.DEVICE_TOKEN ?: "")
+                val token = SourceProviderHolder.sourcesProvider.getAuthSource().registration(phoneNumber, password, Const.DEVICE_TOKEN ?: "")
                 Const.TOKEN = token;
                 activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)!!.edit().putString(token, "").apply()
                 Const.TOKEN = token;
@@ -101,6 +101,7 @@ class FragmentReg : Fragment() {
                     .commit()
                 ToastNotify(context, "Вы вошли")
             } catch (e: Exception)  {
+                println(e)
                 ToastNotify(context, "Неверный логин или пароль")
             }
         }
