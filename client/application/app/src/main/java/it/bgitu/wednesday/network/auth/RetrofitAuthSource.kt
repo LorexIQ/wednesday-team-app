@@ -13,26 +13,26 @@ class RetrofitAuthSource(
     override suspend fun login(
         phone: String,
         password: String,
-        token: String
+        deviceToken: String
     ): String = wrapRetrofitExceptions {
         delay(1000)
         val authRequestBody = AuthRequestBodyDto(
             phone,
             password,
-            token)
+            deviceToken)
         authAPI.login(authRequestBody).token
     }
 
     override suspend fun registration(
         phone: String,
         password: String,
-        token: String
+        deviceToken: String
     ): String = wrapRetrofitExceptions {
         delay(1000)
         val authRequestBody = AuthRequestBodyDto(
             phone,
             password,
-            token)
+            deviceToken)
         authAPI.registration(authRequestBody).token
     }
 }

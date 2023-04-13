@@ -5,10 +5,13 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 import it.bgitu.wednesday.databinding.ActivityMainBinding
 import it.bgitu.wednesday.fragments.*
 import it.bgitu.wednesday.network.Const
 import it.bgitu.wednesday.network.SourceProviderHolder
+import it.bgitu.wednesday.notify.NotificationSender
 import kotlinx.coroutines.runBlocking
 
 
@@ -17,16 +20,25 @@ class MainActivity : AppCompatActivity() {
 
     private var token: String? = null
     private lateinit var sharedPref: SharedPreferences
+
+    init {
+        FirebaseApp.initializeApp(this)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@addOnCompleteListener
+            }
+            Const.DEVICE_TOKEN = task.result
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updateMeInfo()
 
         sharedPref = getSharedPreferences("myCache", Context.MODE_PRIVATE)
         token = sharedPref.getString(Const.TOKEN_CACHE, null)
         Const.TOKEN = token.toString()
-
+        updateMeInfo()
 
         var fragment = Fragment()
         //проверка токена авторизации
@@ -85,7 +97,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkCreatedTravel(): Boolean {
-        println(Const.ME)
         return Const.ME?.tripId != null ||
                 Const.ME?.selfTripId != null
     }
@@ -95,8 +106,9 @@ class MainActivity : AppCompatActivity() {
             try {
                 println(Const.TOKEN)
                 Const.ME = SourceProviderHolder.sourcesProvider.getUsersSource().getMe()
-                println("*********************${Const.ME}************************")
             } catch (e: Exception) {
+                Const.ME = null;
+                sharedPref.edit().putString(Const.TOKEN_CACHE, "").apply();
                 println(e.message)
             }
         }

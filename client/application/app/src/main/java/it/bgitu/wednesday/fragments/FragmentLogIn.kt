@@ -77,7 +77,7 @@ class FragmentLogIn : Fragment() {
         }
         runBlocking {
             try {
-                val token = authAPi.login(phoneNumber, password, "123")
+                val token = authAPi.login(phoneNumber, password, Const.DEVICE_TOKEN ?: "")
                 Const.TOKEN = token;
                 activity
                     ?.getSharedPreferences("myCache", Context.MODE_PRIVATE)!!
