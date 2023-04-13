@@ -79,8 +79,9 @@ class FragmentCreateTravel: Fragment() {
 
         runBlocking {
             try {
+                println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
                 val a = SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()
-                println(a)
+                println(a[0].createdAt)
             }catch (e: Exception) {
                 println("Ошибка " + e)
             }

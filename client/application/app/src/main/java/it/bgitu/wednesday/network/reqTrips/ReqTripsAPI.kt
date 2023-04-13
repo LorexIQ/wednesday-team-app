@@ -1,7 +1,5 @@
 package it.bgitu.wednesday.network.reqTrips
 
-import it.bgitu.wednesday.network.trips.ListTripsResponseBodyDto
-import it.bgitu.wednesday.network.trips.TripsRequestBodyDto
 import it.bgitu.wednesday.network.trips.TripsResponseBodyDto
 import retrofit2.http.*
 
@@ -16,5 +14,5 @@ interface ReqTripsAPI {
     suspend fun deleteReqTrip()
 
     @GET("request-trips/all")
-    suspend fun getAllReqTrip(): ListTripsResponseBodyDto
+    suspend fun getAllReqTrip(): Array<ReqTripsResponseBodyDto>
 }
