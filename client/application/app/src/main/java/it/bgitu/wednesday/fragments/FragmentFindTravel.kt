@@ -23,9 +23,12 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
 import com.google.android.material.timepicker.TimeFormat
+import it.bgitu.wednesday.MODE_CACHE
 import it.bgitu.wednesday.MainActivity
 import it.bgitu.wednesday.network.SourceProviderHolder
+import it.bgitu.wednesday.network.reqTrips.ReqTripsRequestBodyDto
 import it.bgitu.wednesday.network.trips.TripsRequestBodyDto
+import it.bgitu.wednesday.utils.ToastNotify
 import kotlinx.coroutines.runBlocking
 import java.util.*
 import kotlin.collections.ArrayList
@@ -62,15 +65,22 @@ class FragmentFindTravel : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickL
         super.onViewCreated(view, savedInstanceState)
         setLocation()
 
+        val sharedPref = activity?.getSharedPreferences("myCache", Context.MODE_PRIVATE)
+        val isPassenger = !sharedPref!!.getBoolean(MODE_CACHE, false)
+
         binding.title.text = "Ввод точки: start"
+
+        if (isPassenger) {
+            binding.layoutToInclude.buttonCreate.text = "Создать заявку"
+        }
+
 
         binding.bottomAddPoint.setOnClickListener {
             if (arrayListOfMarker.size == 1) {
                 googleMap.clear()
                 maxMarkersCount++
                 binding.title.text = "Ввод точки: END"
-                println(arrayListOfMarker.size)
-            } else if (arrayListOfMarker.size == 2) {
+            } else if (arrayListOfMarker.size >= 2) {
                 binding.groupVisible.visibility = View.GONE
                 binding.layoutToInclude.root.visibility = View.VISIBLE
             }
@@ -82,7 +92,6 @@ class FragmentFindTravel : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickL
             maxMarkersCount = 1
             arrayListOfMarker = arrayListOf()
             binding.title.text = "Ввод точки: START"
-            println(arrayListOfMarker.size)
         }
 
         binding.bottomSetGeo.setOnClickListener {
@@ -111,38 +120,55 @@ class FragmentFindTravel : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickL
         }
 
         binding.layoutToInclude.buttonCreate.setOnClickListener {
+            if (binding.layoutToInclude.price.text.isEmpty()) {
+                ToastNotify(context, "Введите цену")
+                return@setOnClickListener;
+            } else if (binding.layoutToInclude.price.text.isEmpty()) {
+                ToastNotify(context, "Введите дату")
+                return@setOnClickListener;
+            } else if (binding.layoutToInclude.price.text.isEmpty()) {
+                ToastNotify(context, "Введите время")
+                return@setOnClickListener;
+            }
 
-            if (!binding.layoutToInclude.price.text.isNullOrEmpty()) {
+            val from: String = arrayListOfMarker.get(0).position.latitude.toString() +
+                    "|" + arrayListOfMarker.get(0).position.longitude.toString()
+            val to: String = arrayListOfMarker.get(1).position.latitude.toString() +
+                    "|" + arrayListOfMarker.get(1).position.longitude.toString()
 
-                val travelRequestBody = TripsRequestBodyDto(
-                    arrayListOfMarker.get(0).position.latitude.toString() +
-                            "|" + arrayListOfMarker.get(0).position.longitude.toString(),
-                    arrayListOfMarker.get(1).position.latitude.toString() +
-                            "|" + arrayListOfMarker.get(1).position.longitude.toString(),
-                    dateString!!,
-                    countPlace,
-                    Integer.parseInt(binding.layoutToInclude.price.text.toString())
-                )
-
-                runBlocking {
-                    try {
+            runBlocking {
+                try {
+                    if (isPassenger) {
+                        SourceProviderHolder
+                            .sourcesProvider
+                            .getReqTripsSource()
+                            .createReqTrip(ReqTripsRequestBodyDto(
+                                from, to,
+                                dateString!!,
+                                countPlace,
+                                Integer.parseInt(binding.layoutToInclude.price.text.toString())
+                            ))
+                    } else {
                         SourceProviderHolder
                             .sourcesProvider
                             .getTripsSource()
-                            .createTrip(travelRequestBody)
-                        activity
-                            ?.supportFragmentManager!!
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, FragmentActionTravel.newInstance())
-                            .commit()
-                        MainActivity().updateMeInfo()
-                    } catch (e: Exception) {
-                        println(e.message)
+                            .createTrip(TripsRequestBodyDto(
+                                from, to,
+                                dateString!!,
+                                countPlace,
+                                Integer.parseInt(binding.layoutToInclude.price.text.toString())
+                            ))
                     }
+                    activity
+                        ?.supportFragmentManager!!
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, FragmentActionTravel.newInstance())
+                        .commit()
+                    MainActivity().updateMeInfo()
+                } catch (e: Exception) {
+                    println(e.message)
                 }
             }
-
-
         }
 
         binding.layoutToInclude.setDate.setOnClickListener {

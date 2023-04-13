@@ -1,5 +1,6 @@
 package it.bgitu.wednesday.network.trips
 
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -21,5 +22,5 @@ interface TripsAPI {
     suspend fun deleteTrip()
 
     @GET("trips")
-    suspend fun getAllTrip(): ListTripsResponseBodyDto
+    suspend fun getAllTrip(): Array<TripsResponseBodyDto>
 }

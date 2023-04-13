@@ -98,7 +98,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkCreatedTravel(): Boolean {
         return Const.ME?.tripId != null ||
-                Const.ME?.selfTripId != null
+                Const.ME?.selfTripId != null ||
+                Const.ME?.requestTripId != null
     }
 
     fun updateMeInfo() {

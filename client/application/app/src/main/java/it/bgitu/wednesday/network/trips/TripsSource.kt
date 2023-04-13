@@ -9,5 +9,5 @@ interface TripsSource {
 
     suspend fun deleteTrip()
 
-    suspend fun getAllTrip(): ArrayList<TripsResponseBodyDto>
+    suspend fun getAllTrip(): Array<TripsResponseBodyDto>
 }

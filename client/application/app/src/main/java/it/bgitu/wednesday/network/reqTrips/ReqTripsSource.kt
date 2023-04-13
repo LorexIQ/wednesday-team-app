@@ -1,7 +1,5 @@
 package it.bgitu.wednesday.network.reqTrips
 
-import it.bgitu.wednesday.network.trips.ListTripsResponseBodyDto
-import it.bgitu.wednesday.network.trips.TripsRequestBodyDto
 import it.bgitu.wednesday.network.trips.TripsResponseBodyDto
 
 interface ReqTripsSource {
@@ -11,5 +9,5 @@ interface ReqTripsSource {
 
     suspend fun deleteReqTrip()
 
-    suspend fun getAllReqTrip(): ArrayList<TripsResponseBodyDto>
+    suspend fun getAllReqTrip(): Array<ReqTripsResponseBodyDto>
 }
