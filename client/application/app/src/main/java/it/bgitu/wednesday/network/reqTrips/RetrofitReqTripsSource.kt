@@ -25,7 +25,7 @@ class RetrofitReqTripsSource(
         reqTripsAPI.deleteReqTrip()
     }
 
-    override suspend fun getAllReqTrip(): ListTripsResponseBodyDto = wrapRetrofitExceptions{
-        reqTripsAPI.getAllReqTrip()
+    override suspend fun getAllReqTrip(): ArrayList<TripsResponseBodyDto> = wrapRetrofitExceptions{
+        reqTripsAPI.getAllReqTrip().trips
     }
 }
