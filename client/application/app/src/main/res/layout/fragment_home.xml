@@ -200,6 +200,8 @@
                 android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cornerRadius="80dp"
+                android:textColor="#FCFAF6"
                 android:text="Выйти из аккауната"
                 android:textSize="24dp"
                 android:layout_marginBottom="15dp"

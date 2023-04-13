@@ -14,6 +14,7 @@ import it.bgitu.wednesday.myrecycle.ActionListener
 import it.bgitu.wednesday.myrecycle.ItemTravel
 import it.bgitu.wednesday.myrecycle.TravelsAdapter
 import it.bgitu.wednesday.network.SourceProviderHolder
+import it.bgitu.wednesday.network.trips.ListTripsResponseBodyDto
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -77,10 +78,11 @@ class FragmentCreateTravel: Fragment() {
                     "1.3", "0.50", "20:20", "20-12-50", "50"))
         }
 
+        var allTrips: ListTripsResponseBodyDto = ListTripsResponseBodyDto()
         runBlocking {
             try {
-                val a = SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()
-                println(a)
+                allTrips = SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()
+                println(allTrips)
             }catch (e: Exception) {
                 println("Ошибка " + e)
             }
