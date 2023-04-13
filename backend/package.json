@@ -1,6 +1,6 @@
 {
   "name": "test-build-nest",
-  "version": "1.1.4",
+  "version": "1.5.9",
   "description": "",
   "author": "",
   "private": true,
@@ -26,7 +26,9 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "cron": "^2.3.0",
     "cross-env": "^7.0.3",
+    "firebase-admin": "^11.6.0",
     "node-fetch": "^2.6.9",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",

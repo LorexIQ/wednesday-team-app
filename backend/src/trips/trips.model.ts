@@ -5,6 +5,8 @@ import {ApiProperty} from "@nestjs/swagger";
 interface TripCreationAttrs {
     from: string;
     to: string;
+    fromName: string;
+    toName: string;
     date: Date;
     places: number;
     driverId: number;
@@ -24,9 +26,21 @@ export class Trip extends Model<Trip, TripCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false})
     to: string;
 
+    @ApiProperty({default: 'Брянск, Советская улица'})
+    @Column({type: DataType.STRING, allowNull: false})
+    fromName: string;
+
+    @ApiProperty({default: 'Брянск, Советская улица'})
+    @Column({type: DataType.STRING, allowNull: false})
+    toName: string;
+
     @ApiProperty({default: new Date()})
     @Column({type: DataType.DATE, allowNull: false})
     date: Date;
+
+    @ApiProperty({default: 1000})
+    @Column({type: DataType.INTEGER, allowNull: false})
+    priceForPlace: number;
 
     @ApiProperty({default: 2, minimum: 1, maximum: 4})
     @Column({type: DataType.INTEGER, allowNull: false})

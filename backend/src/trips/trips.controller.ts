@@ -17,6 +17,9 @@ import {AddPassengersDto} from "./dto/add-passengers.dto";
 import {MeTripErrorDto} from "../swagger/me-trip-error.dto";
 import {UserData} from "../users/decorator/user-data.decorator";
 import {DeleteTripError1Dto, DeleteTripError2Dto} from "../swagger/delete-trip-error.dto";
+import {FindDto} from "./dto/find.dto";
+import {FoundTripDto} from "./dto/found-trip.dto";
+import {FindTripErrorDto} from "../swagger/find-trip-error.dto";
 
 @UseGuards(JwtGuard)
 @ApiTags('Поездки')
@@ -29,23 +32,32 @@ export class TripsController {
     @ApiResponse({ type: Trip, status: 200})
     @ApiResponse({ type: CreateTripErrorDto, status: 400})
     @Post()
-    createTrip(@Body() tripDto: TripDto, @UserData() user: User): Promise<Trip> {
-        return this.tripsService.createTrip(tripDto, user);
+    async createTrip(@Body() tripDto: TripDto, @UserData() user: User): Promise<Trip> {
+        return await this.tripsService.createTrip(tripDto, user);
     }
 
     @ApiOperation({summary: 'Получить все поездки'})
     @ApiResponse({ type: [Trip], status: 200})
     @Get()
-    getTrips(): Promise<Trip[]> {
-        return this.tripsService.getTrips();
+    async getTrips(): Promise<Trip[]> {
+        return await this.tripsService.getTrips();
+    }
+
+    @ApiOperation({summary: 'Поиск поездок в радиусе начальной и конечной точек'})
+    @ApiBody({type: FindDto})
+    @ApiResponse({ type: [FoundTripDto], status: 200})
+    @ApiResponse({ type: [FindTripErrorDto], status: 400})
+    @Post('find')
+    async getTripsInZone(@UserData() user: User, @Body() findDto: FindDto): Promise<FoundTripDto[]> {
+        return await this.tripsService.getTripsInZone(user, findDto)
     }
 
     @ApiOperation({summary: 'Возвращает активную поездку'})
     @ApiResponse({ type: Trip, status: 200})
     @ApiResponse({ type: MeTripErrorDto, status: 400})
     @Get('me')
-    getMeTrip(@UserData() user: User): Promise<Trip> {
-        return this.tripsService.getMeTrip(user);
+    async getMeTrip(@UserData() user: User): Promise<Trip> {
+        return await this.tripsService.getMeTrip(user);
     }
 
     @ApiOperation({summary: 'Удалить свою поездку в качестве водителя'})
@@ -53,8 +65,8 @@ export class TripsController {
     @ApiResponse({ type: DeleteTripError1Dto, status: 400})
     @ApiResponse({ type: DeleteTripError2Dto, status: 401})
     @Delete('me')
-    deleteTrip(@UserData() user: User): Promise<void> {
-        return this.tripsService.deleteTrip(user);
+    async deleteTrip(@UserData() user: User): Promise<void> {
+        return await this.tripsService.deleteTrip(user);
     }
 
     @ApiOperation({summary: 'Присоединиться к поездке'})
@@ -77,7 +89,7 @@ export class TripsController {
     @ApiResponse({type: LeaveTripError2Dto, status: 401})
     @Patch('leave')
     async leaveTrip(@UserData() user: User) {
-        return this.tripsService.leaveTrip(user);
+        return await this.tripsService.leaveTrip(user);
     }
 
 }
