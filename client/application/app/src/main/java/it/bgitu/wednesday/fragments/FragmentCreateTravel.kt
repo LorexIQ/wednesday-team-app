@@ -57,7 +57,7 @@ class FragmentCreateTravel: Fragment() {
         binding.listItem.layoutManager = LinearLayoutManager(context)
 
 
-        if (flagMode) {
+        /*if (flagMode) {
             runBlocking {
                 try {
                     allTrips = SourceProviderHolder.sourcesProvider.getReqTripsSource().getAllReqTrip()
@@ -68,17 +68,17 @@ class FragmentCreateTravel: Fragment() {
 
         } else {
             //запрос запросов на предку
-        }
+        }*/
 
 
-        runBlocking {
+       /* runBlocking {
             try {
                 allTrips = SourceProviderHolder.sourcesProvider.getTripsSource().getAllTrip()
                 println(allTrips)
             }catch (e: Exception) {
                 println("Ошибка " + e)
             }
-        }
+        }*/
 
         adapter.travels = travels
 
