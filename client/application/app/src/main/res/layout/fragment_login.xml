@@ -13,7 +13,6 @@
         android:text="Авторизация"
         android:textSize="36dp"
         android:lineHeight="30.28dp"
-        android:textStyle="italic"
         android:textColor="#848D68"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
